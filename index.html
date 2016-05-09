@@ -2,13 +2,17 @@
 <html>
 <title>TY-M dev adventures</title>
 
-<xmp theme="slate" style="display:none;">
+<xmp theme="superhero" style="display:none;">
 # TY-M ideas
 
-## Chapter 1
+## Slowly-changing dimension handling for dim_line_item
+_2016-05-09_
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-et dolore magna aliqua. 
+ - Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use last_modified_date_time for that)
+ - So, pull for dim_line_item update begins by taking all records with most recent created_at timestamps from hold_dfp_line_item.
+ - These can be inserted directly to dim_line_item, with current_date as effective_dt and created_at
+ - Then find line_item_code values that match newly-inserted rows, with prior created_at and NULL effective_end_dt
+ - update effective_end_dt of those rows with current_date
 
 ## Chapter 2
 
