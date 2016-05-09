@@ -2,11 +2,11 @@
 <html>
 <title>TY-M dev adventures</title>
 
-<xmp theme="superhero" style="display:none;">
+<xmp theme="simplex" style="display:none;">
 # TY-M ideas
 
 ## Slowly-changing dimension handling for dim_line_item
-_2016-05-09_
+**2016-05-09**
 
  - Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use last_modified_date_time for that)
  - So, pull for dim_line_item update begins by taking all records with most recent created_at timestamps from hold_dfp_line_item.
@@ -14,12 +14,6 @@ _2016-05-09_
  - Then find line_item_code values that match newly-inserted rows, with prior created_at and NULL effective_end_dt
  - update effective_end_dt of those rows with current_date
 
-## Chapter 2
-
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
 </xmp>
 
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
