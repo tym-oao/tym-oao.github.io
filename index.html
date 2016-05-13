@@ -16,6 +16,27 @@
 <xmp style="display:none;">
 <!-- Main content here as markdown -->
 
+# TY-M ideas
+
+## Slowly-changing dimension handling for dim_line_item
+<small>_[2016-05-09]_</small>
+
+- Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use `last_modified_date_time` for that)
+- So, pull for `dim_line_item` update begins by taking all records with most recent `created_at` timestamps from `hold_dfp_line_item`.
+- These can be inserted directly to `dim_line_item`, with `current_date` as `effective_dt` and `created_at`
+- Then find `line_item_code` values that match newly-inserted rows, with prior `created_at` and NULL `effective_end_dt`
+- update `effective_end_dt` of those rows with current_date
+- **TL;DR**: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.
+
+
+## Handling fact updates
+<small>_[2016-05-11]_</small>
+
+- [Accumulating snapshot](http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/) fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.
+- In our case, DFP is already returning us pre-aggregated snapshot data; it's just that the snapshot data can be restated over time as more atomic data accumulates on their end.
+- For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP
+- Exact number of days in the window TBD based on analysis of recent re-pulls of data we had loaded previously.
+- Best guess as of now: 14-day reload window (requires some further investigation to rule out first-of-month being exceptional)
 
 
 </xmp>
