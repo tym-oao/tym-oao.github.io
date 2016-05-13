@@ -1,0 +1,30 @@
+body {
+    margin: 40px auto;
+    padding: 1em;
+    max-width: 36em;
+    background: #ddd;
+    color: #666;
+    font: 100% 'Cardo', serif;
+    font-size: 1.2em;
+    line-height: 1.7em;
+}
+h1 {
+    line-height: 1.2;
+    font-weight: normal;
+    font: 100% "league-gothic", sans-serif;
+    font-size: 2em
+}
+
+h2, h3 {
+        line-height: 1.2;
+        font-weight: normal;
+        font: 100% "league-gothic", sans-serif;
+        font-size: 1.8em;}
+
+code {
+    background: #ededed;
+    color: #555;
+    padding: 2px 4px;
+    border: 1px solid #bcbcbc;
+    border-radius: 3px;
+}
