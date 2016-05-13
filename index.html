@@ -19,6 +19,7 @@
                font-weight: normal;
                font:100% "league-gothic",sans-serif;
                font-size: 1.7em}
+  code{background: #eee; color: #444; padding: 2px; border: #999}
  </style>
  <script src="https://use.typekit.net/nvq3nyg.js"></script>
  <script>try{Typekit.load({ async: true });}catch(e){}</script>
@@ -35,12 +36,12 @@ var somemd =`
 ## Slowly-changing dimension handling for dim_line_item
 <small>_[2016-05-09]_</small>
 
-- Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use last_modified_date_time for that)
-- So, pull for `dim_line_item` update begins by taking all records with most recent created_at timestamps from `hold_dfp_line_item`.
-- These can be inserted directly to `dim_line_item`, with `current_date` as `effective_dt` and `created_at`
-- Then find line_item_code values that match newly-inserted rows, with prior created_at and NULL effective_end_dt
-- update effective_end_dt of those rows with current_date
-- TL;DR: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.
+- Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use \`last_modified_date_time\` for that)
+- So, pull for \`dim_line_item\` update begins by taking all records with most recent \`created_at\` timestamps from \`hold_dfp_line_item\`.
+- These can be inserted directly to \`dim_line_item\`, with \`current_date\` as \`effective_dt\` and \`created_at\`
+- Then find \`line_item_code\` values that match newly-inserted rows, with prior \`created_at\` and NULL \`effective_end_dt\`
+- update \`effective_end_dt\` of those rows with current_date
+- **TL;DR**: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.
 
 
 ## Handling fact updates
@@ -50,7 +51,7 @@ var somemd =`
 - In our case, DFP is already returning us pre-aggregated snapshot data; it's just that the snapshot data can be restated over time as more atomic data accumulates on their end.
 - For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP
 - Exact number of days in the window TBD based on analysis of recent re-pulls of data we had loaded previously.
-- Best guess as of now: 14 reload window (requires some further investigation to rule out first-of-month being exceptional)
+- Best guess as of now: 14-day reload window (requires some further investigation to rule out first-of-month being exceptional)
 
  <!-- ==============================
  Main content end above -->
