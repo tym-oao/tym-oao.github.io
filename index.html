@@ -15,17 +15,6 @@
 
 # TY-M ideas
 
-## Slowly-changing dimension handling for dim_line_item
-<small>_[2016-05-09]_</small>
-
-- Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use `last_modified_date_time` for that)
-- So, pull for `dim_line_item` update begins by taking all records with most recent `created_at` timestamps from `hold_dfp_line_item`.
-- These can be inserted directly to `dim_line_item`, with `current_date` as `effective_dt` and `created_at`
-- Then find `line_item_code` values that match newly-inserted rows, with prior `created_at` and NULL `effective_end_dt`
-- update `effective_end_dt` of those rows with current_date
-- **TL;DR**: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.
-
-
 ## Handling fact updates
 <small>_[2016-05-11]_</small>
 
@@ -35,6 +24,15 @@
 - Exact number of days in the window TBD based on analysis of recent re-pulls of data we had loaded previously.
 - Best guess as of now: 14-day reload window (requires some further investigation to rule out first-of-month being exceptional)
 
+## Slowly-changing dimension handling for dim_line_item
+<small>_[2016-05-09]_</small>
+
+- Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use `last_modified_date_time` for that)
+- So, pull for `dim_line_item` update begins by taking all records with most recent `created_at` timestamps from `hold_dfp_line_item`.
+- These can be inserted directly to `dim_line_item`, with `current_date` as `effective_dt` and `created_at`
+- Then find `line_item_code` values that match newly-inserted rows, with prior `created_at` and NULL `effective_end_dt`
+- update `effective_end_dt` of those rows with current_date
+- **TL;DR**: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.
 
     </article>
     <!-- end markdown content section -->
