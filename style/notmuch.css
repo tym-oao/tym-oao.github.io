@@ -1,9 +1,10 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300|Cardo:400,700);
 body {
     margin: 40px auto;
     padding: 1em;
     max-width: 36em;
-    background: #ddd;
-    color: #666;
+    background: #333;
+    color: #ccc;
     font: 100% 'Cardo', serif;
     font-size: 1.2em;
     line-height: 1.7em;
@@ -11,20 +12,20 @@ body {
 h1 {
     line-height: 1.2;
     font-weight: normal;
-    font: 100% "league-gothic", sans-serif;
+    font: 100% 'Oswald', sans-serif;
+    font-weight: 400;
     font-size: 2em
 }
-
 h2, h3 {
-        line-height: 1.2;
-        font-weight: normal;
-        font: 100% "league-gothic", sans-serif;
-        font-size: 1.8em;}
-
+    line-height: 1.2;
+    font-weight: 300;
+    font: 100% 'Oswald', sans-serif;
+    font-size: 1.25em;
+}
 code {
-    background: #ededed;
-    color: #555;
+    background: #343434;
+    color: #a3a3a3;
     padding: 2px 4px;
-    border: 1px solid #bcbcbc;
+    border: 0.5px solid #3c3c3c;
     border-radius: 3px;
 }

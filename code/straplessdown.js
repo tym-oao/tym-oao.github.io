@@ -30,7 +30,7 @@
   // Get user elements we need
   //
 
-  var markdownEl = document.getElementsByTagName('xmp')[0] || document.getElementsByTagName('textarea')[0],
+  var markdownEl = document.getElementsByTagName('article')[0] || document.getElementsByTagName('textarea')[0],
       titleEl = document.getElementsByTagName('title')[0],
       scriptEls = document.getElementsByTagName('script'),
       navbarEl = document.getElementsByClassName('navbar')[0];
