@@ -15,8 +15,14 @@
 
 # TY-M notions and notes
 
+## Self-referential TODO
+<span class="small">_[2016-05-18]_</span>
+
+While I want to keeping the styling and build of this page brutally simple, one thing I really should consider adding is [pygments](http://pygments.org/) or similar for code syntax highlighting
+
 ## Distinct line items from DFP line item service
 <span class="small">_[2016-05-18]_</span>
+
 Over time, the table `warehouse_hold.hold_dfp_line_item` has accumulated many rows for each line item. In most cases this is due to changes in the line item configuration or status; it may also sometimes be due to overlapping attempts to bring the data up-to-date. In any case, Analytics is interested only in the most recent record for each item. As noted in [Trello](https://trello.com/c/ygfrMXJr/615-warehouse-etl-investigate-and-fix-line-item-discrepancies-between-dfp-and-hold-dfp-line-item-table), I created a new `hold_dfp_line_item_distinct` table, to include just one record per line_item_id, based on maximum `last_modified_date_time` and `created_at` values.
 
 Somewhat oddly (so it seems to me), while a CTE defined as

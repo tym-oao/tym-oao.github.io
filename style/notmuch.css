@@ -30,8 +30,9 @@ code {
     border-radius: 3px;
 }
 
-.small {font-size: 0.75em;
-        font: 100% 'Lato', sans-serif;
+span .small {
+    font-size: 0.75em;
+    font: 100% 'Lato', sans-serif;
 }
 
 a:link, a:visited {color: #aaa;
