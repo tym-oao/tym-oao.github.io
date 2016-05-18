@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Oswald:400,300|Cardo:400,700);
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300|Cardo:400,700|Lato:400);
 body {
     margin: 40px auto;
     padding: 1em;
@@ -28,6 +28,10 @@ code {
     padding: 2px 4px;
     border: 0.5px solid #3c3c3c;
     border-radius: 3px;
+}
+
+.small {font-size: 0.75em;
+        font: 100% 'Lato', sans-serif;
 }
 
 a:link, a:visited {color: #aaa;
