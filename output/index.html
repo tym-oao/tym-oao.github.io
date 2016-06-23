@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <title>TYM engineering notes</title>
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+</head>
+<body>
+<div class='small topmenu'><p><a href="./">Home</a> | <a href="./archives.html">Archives</a></p></div>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1><a href="./">TYM engineering notes</a></h1>
+		</div>
+	</div>
+</div><div id=main>
+            <article>
+                <h2><a href="./self-referential-todo.html">Self-referential TODO</a></h2>
+                <div class="entry-content"><p>While I want to keeping the styling and build of this page brutally simple, one thing I should consider adding is <a href="http://pygments.org/">pygments</a> or similar for code syntax highlighting. <em>(UPDATE: done!)</em></p>
+<p>Also, look into why <a href="https://github.com/yagermadden/straplessdown">straplessdown</a> is stripping inline HTML from the markdown source section. 😕 <em>(UPDATE: wontfix; using Pelican now instead.)</em></p>
+                    <!-- <a class="btn btn-default btn-xs" href="./self-referential-todo.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-06-23T07:24:35-05:00"> <a href="./self-referential-todo.html" rel="bookmark" title="Permalink to Self-referential TODO">2016-06-23 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0718055142177,-87.7152488015581" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="./distinct-line-items-from-dfp-line-item-service.html">Distinct line items from DFP line item service</a></h2>
+                <div class="entry-content"><p>Over time, the table <code>warehouse_hold.hold_dfp_line_item</code> has accumulated many rows for each line item. In most cases this is due to changes in the line item configuration or status; it is also due to overlapping attempts to bring the data up-to-date. In any case, Analytics is interested only in the most recent record for each item. As noted in <a href="https://trello.com/c/ygfrMXJr/615-warehouse-etl-investigate-and-fix-line-item-discrepancies-between-dfp-and-hold-dfp-line-item-table">Trello</a>, I created a new <code>hold_dfp_line_item_distinct</code> table, to include one record per line_item_id, based on maximum <code>last_modified_date_time</code> and <code>created_at</code> values.</p>
+<p>Oddly (says I), while a CTE defined as</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="k">max</span><span class="p">(</span><span class="n">last_modified_date_time</span><span class="p">)</span> <span class="k">as</span> <span class="n">last_modified_date_time</span>
+     <span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">created_at</span><span class="p">)</span> <span class="k">as</span> <span class="n">created_at</span>
+     <span class="p">,</span> <span class="n">line_item_id</span>
+  <span class="k">from</span> <span class="n">hold_dfp_line_item</span>
+ <span class="k">group</span> <span class="k">by</span> <span class="mi">3</span>
+</pre></div>
+</td></tr></table>
+
+<p>has the expected number of rows, joining that on all three columns back to the main table resulted in a small number (39 out of about a million) of duplicate rows.</p>
+<p>I have been able to resolve the matter by using <code>select distinct</code>  in the main query, but I don't understand why it should be necessary.</p>
+<p>Also, as we update with new pulls from the line item service, we'll begin to have multiple rows per line item again, and if this simplified table is desirable in Hold, we'll have to keep refreshing it. Therefore, we will eventually find out whether the duplication of the same line item at the same created_at timestamp was a one-time glitch, or something ongoing. In the former case, we should remove the <code>distinct</code> from the query, for performance reasons. This note is here as a reminder</p>
+                    <!-- <a class="btn btn-default btn-xs" href="./distinct-line-items-from-dfp-line-item-service.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-18T00:00:00-05:00"> <a href="./distinct-line-items-from-dfp-line-item-service.html" rel="bookmark" title="Permalink to Distinct line items from DFP line item service">2016-05-18 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.63285241" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="./handling-fact-updates.html">Handling fact updates</a></h2>
+                <div class="entry-content"><ul>
+<li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
+<li>In our case, DFP is already returning us pre-aggregated snapshot data; they restate the snapshot data over time as more atomic data accumulates on their end.</li>
+<li>For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP</li>
+<li>Exact number of days in the window TBD based on analysis of recent re-pulls of data we have already loaded.</li>
+<li>Best guess as of now: 14-day reload window (requires further investigation to rule out first-of-month being exceptional)</li>
+</ul>
+                    <!-- <a class="btn btn-default btn-xs" href="./handling-fact-updates.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-11T07:24:35-05:00"> <a href="./handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">2016-05-11 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="./slowly-changing-dimension-handling-for-dim_line_item.html">Slowly-changing dimension handling for dim_line_item</a></h2>
+                <div class="entry-content"><ul>
+<li>Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use <code>last_modified_date_time</code> for that)</li>
+<li>So, pull for <code>dim_line_item</code> update begins by taking all records with most recent <code>created_at</code> timestamps from <code>hold_dfp_line_item</code>.</li>
+<li>These can be inserted directly to <code>dim_line_item</code>, with <code>current_date</code> as <code>effective_dt</code> and <code>created_at</code></li>
+<li>Then find <code>line_item_code</code> values that match newly-inserted rows, with prior <code>created_at</code> and NULL <code>effective_end_dt</code></li>
+<li>update <code>effective_end_dt</code> of those rows with current_date</li>
+<li><strong>TL;DR</strong>: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.</li>
+</ul>
+                    <!-- <a class="btn btn-default btn-xs" href="./slowly-changing-dimension-handling-for-dim_line_item.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-09T00:00:00-05:00"> <a href="./slowly-changing-dimension-handling-for-dim_line_item.html" rel="bookmark" title="Permalink to Slowly-changing dimension handling for dim_line_item">2016-05-09 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+
+
+</div>
+</div>
+<footer class="foot-foot">
+   <div class="container">
+      <!-- <hr> -->
+      <div class="row">
+         <div class="col-xs-10 small"><p>&copy; 2016 <a href="https://github.com/tym-oao">Thomas</a><br>
+             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
+
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
+      </div>
+   </div>
+</footer></body>
+</html>

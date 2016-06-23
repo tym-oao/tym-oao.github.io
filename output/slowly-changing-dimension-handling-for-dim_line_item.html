@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <title>TYM engineering notes</title>
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+</head>
+<body>
+<div class='small topmenu'><p><a href="./">Home</a> | <a href="./archives.html">Archives</a></p></div>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1><a href="./">TYM engineering notes</a></h1>
+		</div>
+	</div>
+</div><div id=main>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="./slowly-changing-dimension-handling-for-dim_line_item.html"
+                       rel="bookmark"
+                       title="Permalink to Slowly-changing dimension handling for dim_line_item">
+                        Slowly-changing dimension handling for dim_line_item
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <ul>
+<li>Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use <code>last_modified_date_time</code> for that)</li>
+<li>So, pull for <code>dim_line_item</code> update begins by taking all records with most recent <code>created_at</code> timestamps from <code>hold_dfp_line_item</code>.</li>
+<li>These can be inserted directly to <code>dim_line_item</code>, with <code>current_date</code> as <code>effective_dt</code> and <code>created_at</code></li>
+<li>Then find <code>line_item_code</code> values that match newly-inserted rows, with prior <code>created_at</code> and NULL <code>effective_end_dt</code></li>
+<li>update <code>effective_end_dt</code> of those rows with current_date</li>
+<li><strong>TL;DR</strong>: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.</li>
+</ul>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-09T00:00:00-05:00"> <a href="./slowly-changing-dimension-handling-for-dim_line_item.html" rel="bookmark" title="Permalink to Slowly-changing dimension handling for dim_line_item">2016-05-09 00:00:00</a></abbr>
+                    &nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </div>
+            <!-- /.entry-content -->
+
+        </article>
+    </section>
+
+
+</div>
+</div>
+<footer class="foot-foot">
+   <div class="container">
+      <!-- <hr> -->
+      <div class="row">
+         <div class="col-xs-10 small"><p>&copy; 2016 <a href="https://github.com/tym-oao">Thomas</a><br>
+             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
+
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
+      </div>
+   </div>
+</footer></body>
+</html>

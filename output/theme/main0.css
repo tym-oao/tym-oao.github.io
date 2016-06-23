@@ -1,0 +1,169 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300|Cardo:400,700|Lato:400);
+body {
+    margin: 0 auto;
+    padding: 1em;
+    max-width: 36em;
+    background: #333;
+    color: #ccc;
+    font: 100% 'Cardo', serif;
+    font-size: 1.2em;
+    line-height: 1.7em;
+}
+h1 {
+    line-height: 1.2;
+    font-weight: normal;
+    font: 100% 'Oswald', sans-serif;
+    font-weight: 400;
+    font-size: 1.5em border: none !important;
+}
+h2, h3 {
+    line-height: 1.2;
+    font-weight: 400;
+    font: 100% 'Oswald', sans-serif;
+    font-size: 1.25em;
+    border: none !important;
+}
+code {
+    background: #343434;
+    color: #a3a3a3;
+    padding: 2px 4px;
+    border: 1px solid #3c3c3c;
+    border-radius: 3px;
+}
+
+.highlight pre {
+    line-height: 1.2em;
+    padding: 5px 7px;
+    border: 1px solid #3c3c3c;
+    border-radius: 3px;
+}
+
+a:link, a:visited {
+    color: #aaa;
+    text-decoration: none;
+    border-bottom: 0.5px dotted #acacac;
+}
+
+a:hover {
+    color: #fff;
+}
+
+h1 a, h2 a { border-bottom: none !important;}
+
+blockquote {
+    font-family: "Cardo", serif;
+    font-size: 1em;
+    line-height: 1.5em;
+    font-style: italic !important;
+    color: #bbb;
+}
+.navbar-brand, .navbar-right {
+    font-family: "Oswald", sans-serif;
+}
+.container {
+    max-width: 36em;
+    box-sizing: padding-box;
+    margin: 0 auto;
+}
+
+a.svg {
+    position: relative;
+    display: inline-block;
+    border: none !important;
+}
+a.svg:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+a:hover {
+    border: none;
+}
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px
+}
+@media (min-width:768px) {
+    .container {
+        width: 750px
+    }
+}
+@media (min-width:992px) {
+    .container {
+        width: 970px
+    }
+}
+@media (min-width:1200px) {
+    .container {
+        width: 1170px
+    }
+}
+
+#banner .copy {
+    display: inline;
+    float: left;
+    margin-bottom: 3em;
+    margin-left: -16px;
+    min-width: 100%;
+}
+
+#banner h1 {
+    color: #fff;
+    font-size: 2em;
+    font-weight: 700;
+    line-height: 0.9;
+    margin: 0;
+}
+#banner .intro {
+    color: #fff;
+    font-size: 21px;
+    line-height: 1.33;
+    /*opacity: 0.75;*/
+}
+
+#main {clear: both;}
+
+.small {
+    font-family: "Lato", sans-serif;
+    font-size: 0.75em;
+}
+.foot-foot {
+    margin-top: 2.5em;
+    margin-bottom: 4em;
+    line-height: 1.55em;
+    border-left: #a2a2a2 3px solid;
+    display: block;
+}
+/*.foot-foot a, .foot-foot a:visited {
+    color: #6a6b95;
+    border-bottom: 1px dotted #666;
+}
+.foot-foot a:hover {
+    border: none;
+}*/
+.page-header {
+    border: none !important;
+}
+hr {
+    display: none;
+}
+.storyfoot {
+    font-family: "Lato", sans-serif;
+    font-size: 0.8em;
+}
+
+a.icon {
+    position: relative;
+    display: inline-block;
+    border: none !important;
+}
+
+.entry-content img {
+    max-width: 100%;
+    height: auto;
+}
