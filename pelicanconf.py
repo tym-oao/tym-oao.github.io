@@ -33,3 +33,4 @@ DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 HIDE_SIDEBAR = True
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
+STATIC_PATHS = ['things']
