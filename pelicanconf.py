@@ -34,3 +34,9 @@ HIDE_SIDEBAR = True
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
 STATIC_PATHS = ['things']
+EXTRA_PATH_METADATA = {
+    'things/CNAME': {'path': 'CNAME'},
+    'things/LICENSE': {'path': 'LICENSE'},
+    'things/README': {'path': 'README.md'},
+    'things/.gitignore': {'path': '.gitignore'},
+}
