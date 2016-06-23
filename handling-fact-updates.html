@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <title>TYM engineering notes</title>
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+</head>
+<body>
+<div class='small topmenu'><p><a href="/">Home</a> | <a href="/archives.html">Archives</a></p></div>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1><a href="/">TYM engineering notes</a></h1>
+		</div>
+	</div>
+</div><div id=main>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/handling-fact-updates.html"
+                       rel="bookmark"
+                       title="Permalink to Handling fact updates">
+                        Handling fact updates
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <ul>
+<li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
+<li>In our case, DFP is already returning us pre-aggregated snapshot data; they restate the snapshot data over time as more atomic data accumulates on their end.</li>
+<li>For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP</li>
+<li>Exact number of days in the window TBD based on analysis of recent re-pulls of data we have already loaded.</li>
+<li>Best guess as of now: 14-day reload window (requires further investigation to rule out first-of-month being exceptional)</li>
+</ul>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-11T07:24:35-05:00"> <a href="/handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">2016-05-11 07:24:35</a></abbr>
+                    &nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </div>
+            <!-- /.entry-content -->
+
+        </article>
+    </section>
+
+
+</div>
+</div>
+<footer class="foot-foot">
+   <div class="container">
+      <!-- <hr> -->
+      <div class="row">
+         <div class="col-xs-10 small"><p>&copy; 2016 <a href="https://github.com/tym-oao">Thomas</a><br>
+             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
+
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
+      </div>
+   </div>
+</footer></body>
+</html>
