@@ -3,7 +3,7 @@ body {
     margin: 0 auto;
     padding: 1em;
     max-width: 32em;
-    background: #333;
+    background: #232323;
     color: #a7a7a7;
     font: 100% 'Cardo', serif;
     font-size: 1.2em;
@@ -112,7 +112,7 @@ a:hover {
 #banner .copy {
     display: block;
     float: left;
-    padding-bottom: 1em;
+    /*padding-bottom: 1em;*/
     border-bottom: 3px solid #222;
     margin-left: -16px;
     margin-bottom: 1em;
@@ -127,9 +127,9 @@ a:hover {
 }
 #banner .intro {
     color: #fff;
-    font-size: 21px;
-    line-height: 1.33;
-    /*opacity: 0.75;*/
+    font-size: 1.2em;
+    margin-bottom: 0;
+    padding: 0;
 }
 #main {
     clear: both;
