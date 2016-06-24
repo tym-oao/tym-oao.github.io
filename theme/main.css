@@ -4,7 +4,7 @@ body {
     padding: 1em;
     max-width: 32em;
     background: #232323;
-    color: #a7a7a7;
+    color: #909090;
     font: 100% 'Cardo', serif;
     font-size: 1.2em;
     line-height: 1.7em;
@@ -113,7 +113,7 @@ a:hover {
     display: block;
     float: left;
     /*padding-bottom: 1em;*/
-    border-bottom: 3px solid #222;
+    border-bottom: 3px solid #777;
     margin-left: -16px;
     margin-bottom: 1em;
     /*min-width: 100%;*/
