@@ -14,7 +14,7 @@
 2
 3
 4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ssh warehouse-provisioning-1-fde62020-node-8n9r &lt;span class="se"&gt;\&lt;/span&gt;
-sudo fsck.ext4 -v /dev/disk/by-id/google
+sudo fsck.ext4 -v -y /dev/disk/by-id/google
 gcloud compute instances detach-disk &lt;span class="se"&gt;\&lt;/span&gt;
 gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 &lt;/pre&gt;&lt;/div&gt;
