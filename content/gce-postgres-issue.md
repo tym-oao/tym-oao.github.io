@@ -17,11 +17,13 @@ Posting this here mainly in case this issue happens to come up again. I've notic
 
 Basically, to get things working again, I had to `fsck` the affected disks, then detach them from the instances they were attached to with a `gcloud` command. So, for example, in the case of the disk `mart-data-disk` attached to `warehouse-provisioning-1-fde62020-node-8n9r` I had to:
 
-```#! bash
+```
+#!bash
 ssh warehouse-provisioning-1-fde62020-node-8n9r \
-sudo fsck.ext4 -v /dev/disk/by-id/google
+sudo fsck.ext4 -v -y /dev/disk/by-id/google
 gcloud compute instances detach-disk \
 gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 ```
+
 
 Then restart the `mart-postgres` as usual with `kubectl create -f mart-postgres.yaml`.
