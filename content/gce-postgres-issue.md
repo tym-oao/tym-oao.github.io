@@ -20,7 +20,7 @@ Basically, to get things working again, I had to `fsck` the affected disks, then
 ```
 #!bash
 ssh warehouse-provisioning-1-fde62020-node-8n9r \
-sudo fsck.ext4 -v -y /dev/disk/by-id/google
+sudo fsck.ext4 -v -y /dev/disk/by-id/google-mart-data-disk
 gcloud compute instances detach-disk \
 gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 ```
