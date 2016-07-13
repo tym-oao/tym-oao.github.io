@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2016-06-29T22:54:20+00:00</updated><entry><title>Corrupt database disk issue at GCE</title><link href="/corrupt-database-disk-issue-at-gce.html" rel="alternate"></link><published>2016-06-29T22:54:20+00:00</published><author><name>Thomas</name></author><id>tag:,2016-06-29:corrupt-database-disk-issue-at-gce.html</id><summary type="html">&lt;p&gt;Posting this here mainly in case this issue happens to come up again. I've noticed several cases in recent cloud console Notification Activity in which repeated disk-attachment errors were reported. In those cases I didn't notice any database service outages, but this still seems like something that could end up not being an isolated incident.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2016-07-13T16:13:30+00:00</updated><entry><title>pg_service + psycopg2 = ❤️</title><link href="/pg_service-psycopg2.html" rel="alternate"></link><published>2016-07-13T16:13:30+00:00</published><author><name>Thomas</name></author><id>tag:,2016-07-13:pg_service-psycopg2.html</id><summary type="html">&lt;p&gt;A couple of days ago I learned about the &lt;a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html"&gt;pg_service.conf file&lt;/a&gt; in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a &lt;code&gt;pg_service.conf&lt;/code&gt; like...&lt;/p&gt;
+&lt;p&gt;``` #!plaintext
+[mydb]
+host=somehost
+port=5433
+user=someuser
+dbname=mydatabase&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...then you can go `PGSERVICE=mydb psql` at the command line, and Bob&amp;#39;s your uncle. (This is extra handy if you have the `PGPASSWORD` envar set to the password for `someuser`.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my `.bashrc`. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can&amp;#39;t take arguments):
+
+```#!bash
+pg() { PGSERVICE=$1 psql
+
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.&lt;/p&gt;
+&lt;p&gt;```#!python3
+import psycopg2&lt;/p&gt;
+&lt;p&gt;conn = psycopg2.connect(service='mydb', password='secret')  # or set PGPASSWORD
+```&lt;/p&gt;
+&lt;p&gt;I made a more complete example in &lt;a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59"&gt;this gist&lt;/a&gt;. I suggest we should use this manner of provisioning database connections as a matter of policy:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ADD&lt;/code&gt; a pg_service.conf file to your Docker image (likely better: provide for one to be mounted in at run time).&lt;/li&gt;
+&lt;li&gt;Use Kubernetes secret to set &lt;code&gt;PGPASSWORD&lt;/code&gt; in the environment&lt;/li&gt;
+&lt;li&gt;Pass the service name to the psycopg2 (or whichever driver) connection method&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It just makes sense.&lt;/p&gt;</summary></entry><entry><title>Corrupt database disk issue at GCE</title><link href="/corrupt-database-disk-issue-at-gce.html" rel="alternate"></link><published>2016-06-29T22:54:20+00:00</published><author><name>Thomas</name></author><id>tag:,2016-06-29:corrupt-database-disk-issue-at-gce.html</id><summary type="html">&lt;p&gt;Posting this here mainly in case this issue happens to come up again. I've noticed several cases in recent cloud console Notification Activity in which repeated disk-attachment errors were reported. In those cases I didn't notice any database service outages, but this still seems like something that could end up not being an isolated incident.&lt;/p&gt;
 &lt;h3&gt;Problem&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;Between 22:10 and 22:20 on 2016-06-29, the Google cloud console Activity record shows that the persistent disks mounted to nodes in the &lt;code&gt;warehouse-provisioning-1&lt;/code&gt; k8s cluster detached themselves from the instances they had been attached to.&lt;/li&gt;

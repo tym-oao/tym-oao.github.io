@@ -20,6 +20,44 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/pg_service-psycopg2.html">pg_service + psycopg2 = ❤️</a></h2>
+                <div class="entry-content"><p>A couple of days ago I learned about the <a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html">pg_service.conf file</a> in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a <code>pg_service.conf</code> like...</p>
+<p>``` #!plaintext
+[mydb]
+host=somehost
+port=5433
+user=someuser
+dbname=mydatabase</p>
+<div class="highlight"><pre><span></span>...then you can go `PGSERVICE=mydb psql` at the command line, and Bob&#39;s your uncle. (This is extra handy if you have the `PGPASSWORD` envar set to the password for `someuser`.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my `.bashrc`. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can&#39;t take arguments):
+
+```#!bash
+pg() { PGSERVICE=$1 psql
+
+}
+</pre></div>
+
+
+<p>The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.</p>
+<p>```#!python3
+import psycopg2</p>
+<p>conn = psycopg2.connect(service='mydb', password='secret')  # or set PGPASSWORD
+```</p>
+<p>I made a more complete example in <a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59">this gist</a>. I suggest we should use this manner of provisioning database connections as a matter of policy:</p>
+<ul>
+<li><code>ADD</code> a pg_service.conf file to your Docker image (likely better: provide for one to be mounted in at run time).</li>
+<li>Use Kubernetes secret to set <code>PGPASSWORD</code> in the environment</li>
+<li>Pass the service name to the psycopg2 (or whichever driver) connection method</li>
+</ul>
+<p>It just makes sense.</p>
+                    <!-- <a class="btn btn-default btn-xs" href="/pg_service-psycopg2.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-07-13T16:13:30+00:00"> <a href="/pg_service-psycopg2.html" rel="bookmark" title="Permalink to pg_service + psycopg2 = ❤️">2016-07-13 16:13:30</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8892418555794,-87.6326868892114" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/corrupt-database-disk-issue-at-gce.html">Corrupt database disk issue at GCE</a></h2>
                 <div class="entry-content"><p>Posting this here mainly in case this issue happens to come up again. I've noticed several cases in recent cloud console Notification Activity in which repeated disk-attachment errors were reported. In those cases I didn't notice any database service outages, but this still seems like something that could end up not being an isolated incident.</p>
 <h3>Problem</h3>

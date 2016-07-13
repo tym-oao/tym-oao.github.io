@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <title>TYM engineering notes</title>
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+</head>
+<body>
+<div class='small topmenu'><p><a href="/">Home</a> | <a href="/archives.html">Archives</a></p></div>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1><a href="/">TYM engineering notes</a></h1>
+		</div>
+	</div>
+</div><div id=main>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/pg_service-psycopg2.html"
+                       rel="bookmark"
+                       title="Permalink to pg_service + psycopg2 = ❤️">
+                        pg_service + psycopg2 = ❤️
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <p>A couple of days ago I learned about the <a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html">pg_service.conf file</a> in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a <code>pg_service.conf</code> like...</p>
+<p>``` #!plaintext
+[mydb]
+host=somehost
+port=5433
+user=someuser
+dbname=mydatabase</p>
+<div class="highlight"><pre><span></span>...then you can go `PGSERVICE=mydb psql` at the command line, and Bob&#39;s your uncle. (This is extra handy if you have the `PGPASSWORD` envar set to the password for `someuser`.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my `.bashrc`. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can&#39;t take arguments):
+
+```#!bash
+pg() { PGSERVICE=$1 psql
+
+}
+</pre></div>
+
+
+<p>The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.</p>
+<p>```#!python3
+import psycopg2</p>
+<p>conn = psycopg2.connect(service='mydb', password='secret')  # or set PGPASSWORD
+```</p>
+<p>I made a more complete example in <a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59">this gist</a>. I suggest we should use this manner of provisioning database connections as a matter of policy:</p>
+<ul>
+<li><code>ADD</code> a pg_service.conf file to your Docker image (likely better: provide for one to be mounted in at run time).</li>
+<li>Use Kubernetes secret to set <code>PGPASSWORD</code> in the environment</li>
+<li>Pass the service name to the psycopg2 (or whichever driver) connection method</li>
+</ul>
+<p>It just makes sense.</p>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-07-13T16:13:30+00:00"> <a href="/pg_service-psycopg2.html" rel="bookmark" title="Permalink to pg_service + psycopg2 = ❤️">2016-07-13 16:13:30</a></abbr>
+                    &nbsp;<a href="http://maps.google.com/maps?q=41.8892418555794,-87.6326868892114" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </div>
+            <!-- /.entry-content -->
+
+        </article>
+    </section>
+
+
+</div>
+</div>
+<footer class="foot-foot">
+   <div class="container">
+      <!-- <hr> -->
+      <div class="row">
+         <div class="col-xs-10 small"><p>&copy; 2016 <a href="https://github.com/tym-oao">Thomas</a><br>
+             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
+
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
+      </div>
+   </div>
+</footer></body>
+</html>
