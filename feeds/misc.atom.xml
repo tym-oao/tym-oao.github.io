@@ -7,17 +7,18 @@ port=5433
 user=someuser
 dbname=mydatabase&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...then you can go `PGSERVICE=mydb psql` at the command line, and Bob&amp;#39;s your uncle. (This is extra handy if you have the `PGPASSWORD` envar set to the password for `someuser`.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my `.bashrc`. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can&amp;#39;t take arguments):
-
-```#!bash
-pg() { PGSERVICE=$1 psql
-
-}
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.&lt;/p&gt;
-&lt;p&gt;```#!python3
-import psycopg2&lt;/p&gt;
+&lt;h1&gt;!bash&lt;/h1&gt;
+&lt;p&gt;pg() { PGSERVICE=$1 psql&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;!python3&lt;/h1&gt;
+&lt;p&gt;import psycopg2&lt;/p&gt;
 &lt;p&gt;conn = psycopg2.connect(service='mydb', password='secret')  # or set PGPASSWORD
 ```&lt;/p&gt;
 &lt;p&gt;I made a more complete example in &lt;a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59"&gt;this gist&lt;/a&gt;. I suggest we should use this manner of provisioning database connections as a matter of policy:&lt;/p&gt;

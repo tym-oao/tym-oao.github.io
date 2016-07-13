@@ -29,17 +29,18 @@ port=5433
 user=someuser
 dbname=mydatabase</p>
 <div class="highlight"><pre><span></span>...then you can go `PGSERVICE=mydb psql` at the command line, and Bob&#39;s your uncle. (This is extra handy if you have the `PGPASSWORD` envar set to the password for `someuser`.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my `.bashrc`. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can&#39;t take arguments):
-
-```#!bash
-pg() { PGSERVICE=$1 psql
-
-}
 </pre></div>
 
 
-<p>The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.</p>
-<p>```#!python3
-import psycopg2</p>
+<h1>!bash</h1>
+<p>pg() { PGSERVICE=$1 psql</p>
+<p>}</p>
+<div class="highlight"><pre><span></span>The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.
+</pre></div>
+
+
+<h1>!python3</h1>
+<p>import psycopg2</p>
 <p>conn = psycopg2.connect(service='mydb', password='secret')  # or set PGPASSWORD
 ```</p>
 <p>I made a more complete example in <a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59">this gist</a>. I suggest we should use this manner of provisioning database connections as a matter of policy:</p>
