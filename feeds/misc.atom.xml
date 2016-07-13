@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2016-07-13T16:13:30+00:00</updated><entry><title>pg_service + psycopg2 = ❤️</title><link href="/pg_service-psycopg2.html" rel="alternate"></link><published>2016-07-13T16:13:30+00:00</published><author><name>Thomas</name></author><id>tag:,2016-07-13:pg_service-psycopg2.html</id><summary type="html">&lt;p&gt;A couple of days ago I learned about the &lt;a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html"&gt;pg_service.conf file&lt;/a&gt; in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a &lt;code&gt;pg_service.conf&lt;/code&gt; like...&lt;/p&gt;
-&lt;p&gt;``` #!plaintext
-[mydb]
-host=somehost
-port=5433
-user=someuser
-dbname=mydatabase&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...then you can go `PGSERVICE=mydb psql` at the command line, and Bob&amp;#39;s your uncle. (This is extra handy if you have the `PGPASSWORD` envar set to the password for `someuser`.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my `.bashrc`. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can&amp;#39;t take arguments):
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[mydb]&lt;/span&gt;
+&lt;span class="na"&gt;host&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;somehost&lt;/span&gt;
+&lt;span class="na"&gt;port&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;5433&lt;/span&gt;
+&lt;span class="na"&gt;user&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;someuser&lt;/span&gt;
+&lt;span class="na"&gt;dbname&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;mydatabase&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
+&lt;p&gt;...then you can go &lt;code&gt;PGSERVICE=mydb psql&lt;/code&gt; at the command line, and Bob's your uncle. (This is extra handy if you have the &lt;code&gt;PGPASSWORD&lt;/code&gt; envar set to the password for &lt;code&gt;someuser&lt;/code&gt;.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my &lt;code&gt;.bashrc&lt;/code&gt;. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can't take arguments):&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pg&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt; &lt;span class="nv"&gt;PGSERVICE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt; psql
 
-&lt;h1&gt;!bash&lt;/h1&gt;
-&lt;p&gt;pg() { PGSERVICE=$1 psql&lt;/p&gt;
-&lt;p&gt;}&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.
+&lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
+&lt;p&gt;The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;psycopg2&lt;/span&gt;
 
-&lt;h1&gt;!python3&lt;/h1&gt;
-&lt;p&gt;import psycopg2&lt;/p&gt;
-&lt;p&gt;conn = psycopg2.connect(service='mydb', password='secret')  # or set PGPASSWORD
-```&lt;/p&gt;
+&lt;span class="n"&gt;conn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;psycopg2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;mydb&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;secret&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# or set PGPASSWORD&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
 &lt;p&gt;I made a more complete example in &lt;a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59"&gt;this gist&lt;/a&gt;. I suggest we should use this manner of provisioning database connections as a matter of policy:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;ADD&lt;/code&gt; a pg_service.conf file to your Docker image (likely better: provide for one to be mounted in at run time).&lt;/li&gt;
