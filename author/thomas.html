@@ -20,6 +20,18 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/using-pg_serviceconf.html">Using pg_service.conf</a></h2>
+                <div class="entry-content"><p>Like so:</p>
+<script src="https://gist.github.com/yagermadden/d515f0b1dde2c4cdd6c192e08bb33e00.js"></script>
+                    <!-- <a class="btn btn-default btn-xs" href="/using-pg_serviceconf.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-07-14T17:42:15+00:00"> <a href="/using-pg_serviceconf.html" rel="bookmark" title="Permalink to Using pg_service.conf">2016-07-14 17:42:15</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8892138776688,-87.6328944003586" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/pg_service-psycopg2.html">pg_service + psycopg2 = ❤️</a></h2>
                 <div class="entry-content"><p>A couple of days ago I learned about the <a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html">pg_service.conf file</a> in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a <code>pg_service.conf</code> like...</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
