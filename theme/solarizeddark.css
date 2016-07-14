@@ -69,7 +69,7 @@
 .highlight pre .vi { color: #268bd2 } /* Name.Variable.Instance */
 .highlight pre .il { color: #2aa198 } /* Literal.Number.Integer.Long */
 
-.gist { background-color: #002b36 !important; color: #93a1a1 !important;}
+.gist .gist-file { background-color: #002b36 !important; color: #93a1a1 !important;}
 .gist-syntax pre .hll { background-color: #ffffcc }
 .gist-syntax pre, .gist-syntaxtable pre { background: #002b36; color: #839496 }
 .gist-syntax pre .c { color: #586e75; font-style: italic } /* Comment */
