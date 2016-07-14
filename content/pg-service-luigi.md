@@ -7,4 +7,6 @@ I was thinking about the pg_service.conf post I wrote yesterday, and wondering h
 
 I didn't want to build this up from a generic Luigi `Task`, because `luigi.postgres` and `luigi.contrib.rdbms` have a lot of really useful stuff already implemented that I would have had to repeat for myself. In the end, I found that I could just set the `rdms` properties to `None` defaults and then ignore them, while overriding `PostgresTarget.connect()` the way I wanted to. The resulting template tasks, along with a couple of simple examples of subclassing them for specific jobs are in [this Gist](https://gist.github.com/yagermadden/d515f0b1dde2c4cdd6c192e08bb33e00) which is also shown below:
 
+```#!python
 [gist:id=d515f0b1dde2c4cdd6c192e08bb33e00]
+```
