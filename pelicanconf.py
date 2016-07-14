@@ -40,3 +40,4 @@ EXTRA_PATH_METADATA = {
     'things/README': {'path': 'README.md'},
     'things/.gitignore': {'path': '.gitignore'},
 }
+PLUGINS = ['pelican_gist']
