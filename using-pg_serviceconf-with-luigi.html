@@ -34,8 +34,6 @@
                 <p>I was thinking about the pg_service.conf post I wrote yesterday, and wondering how to follow that practice in <a href="http://luigi.readthedocs.io/">Luigi</a>. It's a little tricky, because <a href="http://luigi.readthedocs.io/en/stable/api/luigi.postgres.html"><code>luigi.postgres</code></a> implements instances of <code>luigi.contrib.rdbms</code> abstract classes, and therefore expects all the abstract properties (i.e., host, database, etc.) to be specified. So, when I tried simply overriding the <code>connect()</code> method of <code>PostgresTarget</code> I was getting TypeErrors because those abstract methods weren't implemented.</p>
 <p>I didn't want to build this up from a generic Luigi <code>Task</code>, because <code>luigi.postgres</code> and <code>luigi.contrib.rdbms</code> have a lot of really useful stuff already implemented that I would have had to repeat for myself. In the end, I found that I could just set the <code>rdms</code> properties to <code>None</code> defaults and then ignore them, while overriding <code>PostgresTarget.connect()</code> the way I wanted to. The resulting template tasks, along with a couple of simple examples of subclassing them for specific jobs are in <a href="https://gist.github.com/yagermadden/d515f0b1dde2c4cdd6c192e08bb33e00">this Gist</a> which is also shown below:</p>
 <div class="gist">
-    <script src='https://gist.github.com/d515f0b1dde2c4cdd6c192e08bb33e00.js'></script>
-    <noscript>
         <pre><code>import luigi
 import luigi.postgres
 import psycopg2
@@ -119,7 +117,6 @@ class PgExampleLoad(PgCopyToTable):
         for record in testdata:
             yield record
 </code></pre>
-    </noscript>
 </div>
                 <footer class="storyfoot">
                     <abbr class="storydate" title="2016-07-14T17:42:15+00:00"> <a href="/using-pg_serviceconf-with-luigi.html" rel="bookmark" title="Permalink to Using pg_service.conf with Luigi">2016-07-14 17:42:15</a></abbr>
