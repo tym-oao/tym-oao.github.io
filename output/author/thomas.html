@@ -10,29 +10,30 @@
   <script src="https://use.fontawesome.com/72ee4db781.js"></script>
 </head>
 <body>
-<div class='small topmenu'><p><a href="/">Home</a> | <a href="/archives.html">Archives</a></p></div>
+<div class='small topmenu'><p><a href="../">Home</a> | <a href="../archives.html">Archives</a></p></div>
 
 <div id="banner">
 	<div class="container">
 		<div class="copy">
-			<h1><a href="/">TYM engineering notes</a></h1>
+			<h1><a href="../">TYM engineering notes</a></h1>
 		</div>
 	</div>
 </div><div id=main>
             <article>
-                <h2><a href="/using-pg_serviceconf.html">Using pg_service.conf</a></h2>
-                <div class="entry-content"><p>Like so:</p>
+                <h2><a href="../using-pg_serviceconf.html">Using pg_service.conf</a></h2>
+                <div class="entry-content"><p>I was thinking about the pg_service.conf post I wrote yesterday, and wondering how to follow that practice in <a href="http://luigi.readthedocs.io/">Luigi</a>. It's a little tricky, because <a href="http://luigi.readthedocs.io/en/stable/api/luigi.postgres.html"><code>luigi.postgres</code></a> implements instances of <code>luigi.contrib.rdbms</code> abstract classes, and therefore expects all the abstract properties (i.e., host, database, etc.) to be specified. So, when I tried simply overriding the <code>connect()</code> method of <code>PostgresTarget</code> I was getting TypeErrors because those abstract methods weren't implemented.</p>
+<p>I didn't want to build this up from a generic Luigi <code>Task</code>, because <code>luigi.postgres</code> and <code>luigi.contrib.rdbms</code> have a lot of really useful stuff already implemented that I would have had to repeat for myself. In the end, I found that I could just set the <code>rdms</code> properties to <code>None</code> defaults and then ignore them, while overriding <code>PostgresTarget.connect()</code> the way I wanted to. The resulting template tasks, along with a couple of simple examples of subclassing them for specific jobs are in this Gist</p>
 <script src="https://gist.github.com/yagermadden/d515f0b1dde2c4cdd6c192e08bb33e00.js"></script>
-                    <!-- <a class="btn btn-default btn-xs" href="/using-pg_serviceconf.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../using-pg_serviceconf.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-07-14T17:42:15+00:00"> <a href="/using-pg_serviceconf.html" rel="bookmark" title="Permalink to Using pg_service.conf">2016-07-14 17:42:15</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8892138776688,-87.6328944003586" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-07-14T17:42:15+00:00"> <a href="../using-pg_serviceconf.html" rel="bookmark" title="Permalink to Using pg_service.conf">2016-07-14 17:42:15</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8892138776688,-87.6328944003586" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
             <!-- <hr/> -->
             <article>
-                <h2><a href="/pg_service-psycopg2.html">pg_service + psycopg2 = ❤️</a></h2>
+                <h2><a href="../pg_service-psycopg2.html">pg_service + psycopg2 = ❤️</a></h2>
                 <div class="entry-content"><p>A couple of days ago I learned about the <a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html">pg_service.conf file</a> in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a <code>pg_service.conf</code> like...</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -71,16 +72,16 @@
 <li>Pass the service name to the psycopg2 (or whichever driver) connection method</li>
 </ul>
 <p>It just makes sense.</p>
-                    <!-- <a class="btn btn-default btn-xs" href="/pg_service-psycopg2.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../pg_service-psycopg2.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-07-13T16:13:30+00:00"> <a href="/pg_service-psycopg2.html" rel="bookmark" title="Permalink to pg_service + psycopg2 = ❤️">2016-07-13 16:13:30</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8892418555794,-87.6326868892114" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-07-13T16:13:30+00:00"> <a href="../pg_service-psycopg2.html" rel="bookmark" title="Permalink to pg_service + psycopg2 = ❤️">2016-07-13 16:13:30</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8892418555794,-87.6326868892114" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
             <!-- <hr/> -->
             <article>
-                <h2><a href="/corrupt-database-disk-issue-at-gce.html">Corrupt database disk issue at GCE</a></h2>
+                <h2><a href="../corrupt-database-disk-issue-at-gce.html">Corrupt database disk issue at GCE</a></h2>
                 <div class="entry-content"><p>Posting this here mainly in case this issue happens to come up again. I've noticed several cases in recent cloud console Notification Activity in which repeated disk-attachment errors were reported. In those cases I didn't notice any database service outages, but this still seems like something that could end up not being an isolated incident.</p>
 <h3>Problem</h3>
 <ul>
@@ -103,28 +104,28 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 </td></tr></table>
 
 <p>Then restart the <code>mart-postgres</code> as usual with <code>kubectl create -f mart-postgres.yaml</code>.</p>
-                    <!-- <a class="btn btn-default btn-xs" href="/corrupt-database-disk-issue-at-gce.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../corrupt-database-disk-issue-at-gce.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-06-29T22:54:20+00:00"> <a href="/corrupt-database-disk-issue-at-gce.html" rel="bookmark" title="Permalink to Corrupt database disk issue at GCE">2016-06-29 22:54:20</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8828766952614,-87.64016439234" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-06-29T22:54:20+00:00"> <a href="../corrupt-database-disk-issue-at-gce.html" rel="bookmark" title="Permalink to Corrupt database disk issue at GCE">2016-06-29 22:54:20</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8828766952614,-87.64016439234" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
             <!-- <hr/> -->
             <article>
-                <h2><a href="/self-referential-todo.html">Self-referential TODO</a></h2>
+                <h2><a href="../self-referential-todo.html">Self-referential TODO</a></h2>
                 <div class="entry-content"><p><s>While I want to keeping the styling and build of this page brutally simple, one thing I should consider adding is <a href="http://pygments.org/">pygments</a> or similar for code syntax highlighting.</s> <em>(UPDATE: done!)</em></p>
 <p><s>Also, look into why <a href="https://github.com/yagermadden/straplessdown">straplessdown</a> is stripping inline HTML from the markdown source section. 😕 </s> <em>(UPDATE: wontfix; using Pelican now instead.)</em></p>
-                    <!-- <a class="btn btn-default btn-xs" href="/self-referential-todo.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../self-referential-todo.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-06-23T07:24:35-05:00"> <a href="/self-referential-todo.html" rel="bookmark" title="Permalink to Self-referential TODO">2016-06-23 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0718055142177,-87.7152488015581" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-06-23T07:24:35-05:00"> <a href="../self-referential-todo.html" rel="bookmark" title="Permalink to Self-referential TODO">2016-06-23 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0718055142177,-87.7152488015581" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
             <!-- <hr/> -->
             <article>
-                <h2><a href="/distinct-line-items-from-dfp-line-item-service.html">Distinct line items from DFP line item service</a></h2>
+                <h2><a href="../distinct-line-items-from-dfp-line-item-service.html">Distinct line items from DFP line item service</a></h2>
                 <div class="entry-content"><p>Over time, the table <code>warehouse_hold.hold_dfp_line_item</code> has accumulated many rows for each line item. In most cases this is due to changes in the line item configuration or status; it is also due to overlapping attempts to bring the data up-to-date. In any case, Analytics is interested only in the most recent record for each item. As noted in <a href="https://trello.com/c/ygfrMXJr/615-warehouse-etl-investigate-and-fix-line-item-discrepancies-between-dfp-and-hold-dfp-line-item-table">Trello</a>, I created a new <code>hold_dfp_line_item_distinct</code> table, to include one record per line_item_id, based on maximum <code>last_modified_date_time</code> and <code>created_at</code> values.</p>
 <p>Oddly (says I), while a CTE defined as</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -142,16 +143,16 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 <p>has the expected number of rows, joining that on all three columns back to the main table resulted in a small number (39 out of about a million) of duplicate rows.</p>
 <p>I have been able to resolve the matter by using <code>select distinct</code>  in the main query, but I don't understand why it should be necessary.</p>
 <p>Also, as we update with new pulls from the line item service, we'll begin to have multiple rows per line item again, and if this simplified table is desirable in Hold, we'll have to keep refreshing it. Therefore, we will eventually find out whether the duplication of the same line item at the same created_at timestamp was a one-time glitch, or something ongoing. In the former case, we should remove the <code>distinct</code> from the query, for performance reasons. This note is here as a reminder</p>
-                    <!-- <a class="btn btn-default btn-xs" href="/distinct-line-items-from-dfp-line-item-service.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../distinct-line-items-from-dfp-line-item-service.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-05-18T00:00:00-05:00"> <a href="/distinct-line-items-from-dfp-line-item-service.html" rel="bookmark" title="Permalink to Distinct line items from DFP line item service">2016-05-18 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.63285241" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-05-18T00:00:00-05:00"> <a href="../distinct-line-items-from-dfp-line-item-service.html" rel="bookmark" title="Permalink to Distinct line items from DFP line item service">2016-05-18 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.63285241" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
             <!-- <hr/> -->
             <article>
-                <h2><a href="/handling-fact-updates.html">Handling fact updates</a></h2>
+                <h2><a href="../handling-fact-updates.html">Handling fact updates</a></h2>
                 <div class="entry-content"><ul>
 <li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
 <li>In our case, DFP is already returning us pre-aggregated snapshot data; they restate the snapshot data over time as more atomic data accumulates on their end.</li>
@@ -159,16 +160,16 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 <li>Exact number of days in the window TBD based on analysis of recent re-pulls of data we have already loaded.</li>
 <li>Best guess as of now: 14-day reload window (requires further investigation to rule out first-of-month being exceptional)</li>
 </ul>
-                    <!-- <a class="btn btn-default btn-xs" href="/handling-fact-updates.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../handling-fact-updates.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-05-11T07:24:35-05:00"> <a href="/handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">2016-05-11 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-05-11T07:24:35-05:00"> <a href="../handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">2016-05-11 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
             <!-- <hr/> -->
             <article>
-                <h2><a href="/slowly-changing-dimension-handling-for-dim_line_item.html">Slowly-changing dimension handling for dim_line_item</a></h2>
+                <h2><a href="../slowly-changing-dimension-handling-for-dim_line_item.html">Slowly-changing dimension handling for dim_line_item</a></h2>
                 <div class="entry-content"><ul>
 <li>Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use <code>last_modified_date_time</code> for that)</li>
 <li>So, pull for <code>dim_line_item</code> update begins by taking all records with most recent <code>created_at</code> timestamps from <code>hold_dfp_line_item</code>.</li>
@@ -177,10 +178,10 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
 <li>update <code>effective_end_dt</code> of those rows with current_date</li>
 <li><strong>TL;DR</strong>: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.</li>
 </ul>
-                    <!-- <a class="btn btn-default btn-xs" href="/slowly-changing-dimension-handling-for-dim_line_item.html">more ...</a> -->
+                    <!-- <a class="btn btn-default btn-xs" href="../slowly-changing-dimension-handling-for-dim_line_item.html">more ...</a> -->
                 </div>
                 <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-05-09T00:00:00-05:00"> <a href="/slowly-changing-dimension-handling-for-dim_line_item.html" rel="bookmark" title="Permalink to Slowly-changing dimension handling for dim_line_item">2016-05-09 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    <abbr class="storydate" title="2016-05-09T00:00:00-05:00"> <a href="../slowly-changing-dimension-handling-for-dim_line_item.html" rel="bookmark" title="Permalink to Slowly-changing dimension handling for dim_line_item">2016-05-09 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
