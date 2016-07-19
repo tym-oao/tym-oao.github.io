@@ -20,6 +20,17 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/stackdriver.html">Stackdriver</a></h2>
+                <div class="entry-content"><p>I've studying [Stackdriver Monitoring] for Google Cloud, and setting up a few simple alerts and metric dashboards. I wrote up my findings on <a href="https://github.com/tym-oao/tym-oao.github.io/wiki/Stackdriver-Monitoring">this wiki page</a>.</p>
+                    <!-- <a class="btn btn-default btn-xs" href="/stackdriver.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-07-19T03:31:03+00:00"> <a href="/stackdriver.html" rel="bookmark" title="Permalink to Stackdriver">2016-07-19 03:31:03</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0718216760994,-87.7153549129115" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/using-pg_serviceconf-with-luigi.html">Using pg_service.conf with Luigi</a></h2>
                 <div class="entry-content"><p>I was thinking about the pg_service.conf post I wrote yesterday, and wondering how to follow that practice in <a href="http://luigi.readthedocs.io/">Luigi</a>. It's a little tricky, because <a href="http://luigi.readthedocs.io/en/stable/api/luigi.postgres.html"><code>luigi.postgres</code></a> implements instances of <code>luigi.contrib.rdbms</code> abstract classes, and therefore expects all the abstract properties (i.e., host, database, etc.) to be specified. So, when I tried simply overriding the <code>connect()</code> method of <code>PostgresTarget</code> I was getting TypeErrors because those abstract methods weren't implemented.</p>
 <p>I didn't want to build this up from a generic Luigi <code>Task</code>, because <code>luigi.postgres</code> and <code>luigi.contrib.rdbms</code> have a lot of really useful stuff already implemented that I would have had to repeat for myself. In the end, I found that I could just set the <code>rdms</code> properties to <code>None</code> defaults and then ignore them, while overriding <code>PostgresTarget.connect()</code> the way I wanted to. The resulting template tasks, along with a couple of simple examples of subclassing them for specific jobs are in <a href="https://gist.github.com/yagermadden/d515f0b1dde2c4cdd6c192e08bb33e00">this Gist</a> which is also shown below:</p>
@@ -255,25 +266,12 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
             </article>
 
             <!-- <hr/> -->
-            <article>
-                <h2><a href="/slowly-changing-dimension-handling-for-dim_line_item.html">Slowly-changing dimension handling for dim_line_item</a></h2>
-                <div class="entry-content"><ul>
-<li>Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use <code>last_modified_date_time</code> for that)</li>
-<li>So, pull for <code>dim_line_item</code> update begins by taking all records with most recent <code>created_at</code> timestamps from <code>hold_dfp_line_item</code>.</li>
-<li>These can be inserted directly to <code>dim_line_item</code>, with <code>current_date</code> as <code>effective_dt</code> and <code>created_at</code></li>
-<li>Then find <code>line_item_code</code> values that match newly-inserted rows, with prior <code>created_at</code> and NULL <code>effective_end_dt</code></li>
-<li>update <code>effective_end_dt</code> of those rows with current_date</li>
-<li><strong>TL;DR</strong>: treat line_item_code as the fixed SCD key; treat change in any other column as requiring a new record.</li>
-</ul>
-                    <!-- <a class="btn btn-default btn-xs" href="/slowly-changing-dimension-handling-for-dim_line_item.html">more ...</a> -->
-                </div>
-                <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-05-09T00:00:00-05:00"> <a href="/slowly-changing-dimension-handling-for-dim_line_item.html" rel="bookmark" title="Permalink to Slowly-changing dimension handling for dim_line_item">2016-05-09 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
-                </footer><!-- /.post-info -->
-            </article>
 
-            <!-- <hr/> -->
-
+        <ul class="pager">
+                <li class="previous disabled"><a href="#">&larr; Newer</a></li>
+                <li class="next"><a
+                        href="/category/misc2.html">Older &rarr;</a></li>
+        </ul>
 
 </div>
 </div>
