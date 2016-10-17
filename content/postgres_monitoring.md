@@ -3,7 +3,7 @@ Date: 2016-10-11 18:04:22 +0000
 lat: 42.0717804175097
 long: -87.7154614593466
 
-## What we have in palace
+## What we have in place
 
 #### Monitors
 
