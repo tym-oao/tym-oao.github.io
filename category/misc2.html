@@ -20,6 +20,23 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/handling-fact-updates.html">Handling fact updates</a></h2>
+                <div class="entry-content"><ul>
+<li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
+<li>In our case, DFP is already returning us pre-aggregated snapshot data; they restate the snapshot data over time as more atomic data accumulates on their end.</li>
+<li>For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP</li>
+<li>Exact number of days in the window TBD based on analysis of recent re-pulls of data we have already loaded.</li>
+<li>Best guess as of now: 14-day reload window (requires further investigation to rule out first-of-month being exceptional)</li>
+</ul>
+                    <!-- <a class="btn btn-default btn-xs" href="/handling-fact-updates.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-11T07:24:35-05:00"> <a href="/handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">2016-05-11 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/slowly-changing-dimension-handling-for-dim_line_item.html">Slowly-changing dimension handling for dim_line_item</a></h2>
                 <div class="entry-content"><ul>
 <li>Hold table load is somewhat incremental already: all modified items get added on to the hold table (not really distinguished from prior versions, but we can use <code>last_modified_date_time</code> for that)</li>

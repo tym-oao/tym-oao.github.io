@@ -20,6 +20,70 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/postgres-monitoring.html">Postgres Monitoring</a></h2>
+                <div class="entry-content"><h2>What we have in palace</h2>
+<h4>Monitors</h4>
+<p>Via <a href="https://app.google.stackdriver.com/services/postgresql">Stackdriver</a>:</p>
+<ul>
+<li>Connections (count): Number of connections to PostgreSQL.</li>
+<li>Disk Usage (byte): Number of bytes currently being used on disk.</li>
+<li>Commits (count/s): Number of commits per second.</li>
+<li>Rollbacks (count/s): Number of rollbacks per second.</li>
+<li>Heap Blocks Read Rate (count/s): Number of blocks read from the heap.</li>
+<li>Heap Cache Hit Rate (count/s): Number of blocks read directly out of the cache.</li>
+<li>Index Blocks Read Rate (count/s): Number of blocks read from the index.</li>
+<li>Index Cache Hit Rate (count/s): Number of index blocks read directly out of the cache.</li>
+<li>Toast Blocks Read Rate (count/s): Number of reads from the toast blocks.</li>
+<li>Toast Cache Hit Rate (count/s): Number of toast blocks read directly out of the cache.</li>
+<li>Toast Index Blocks Read Rate (count/s): Number of blocks read from the toast index.</li>
+<li>Toast Index Cache Hit Rate (count/s): Number of toast index blocks read directly out of the cache.</li>
+<li>Operations [delete, insert, update, heap only update] (count/s): Number of rows [deleted, inserted, updated, heap only updated] in the db.</li>
+<li>Dead Tuples (count): Number of tuples that are dead in the db.</li>
+<li>Live Tuples (count): Number of tuples that are live in the db.</li>
+</ul>
+<p>Plus CPU, RAM, disk, and network traffic stats on the host</p>
+<p>All of the above are simply being passively monitored; we don't have any threshold-based alerting on any metrics.</p>
+<h4>Alerting policies</h4>
+<ul>
+<li>Uptime Check Health on mart.pgdata.xyz fails</li>
+<li>Uptime Check Health on warehouse.pgdata.xyz fails</li>
+<li>CPU Usage is absent for greater than 5 minutes from warehouse.pgdata.xyz</li>
+<li>CPU Usage is absent for greater than 10 minutes from api-postgres</li>
+<li>CPU Usage is absent for greater than 5 minutes from mart-postgres</li>
+</ul>
+<p>When raised, these all send notice to the #data channel in Slack, and push notification to TYM via the Google Could Console app.</p>
+<h2>What we should still add</h2>
+<h4>Things to monitor</h4>
+<ul>
+<li>Count of database locks</li>
+<li>Duration of queries (avg, longest-running)</li>
+<li>Count and duration of idle-in-transaction connections</li>
+<li>Last checkpoint</li>
+<li>Actual uptime based on database connection (existing checks use ping or CPU metric availability)</li>
+</ul>
+<h4>Things to alert on</h4>
+<ul>
+<li>blocking locks (at all)</li>
+<li>exclusive locks (threshold-based)</li>
+<li>connections waiting for a lock (threshold-based)</li>
+<li>long-running queries</li>
+</ul>
+<h4>Some options (needs research)</h4>
+<ul>
+<li>Custom metrics via Stackdriver API</li>
+<li><a href="https://no0p.github.io/pgantenna/">pgantenna</a></li>
+<li><a href="http://opm.io/">OPM</a> (Don't miss <a href="https://github.com/yuhuman/OPM-Docker">Dockerized</a> version)</li>
+<li>Roll our own check_postgres, Nagios, collectd, graphite server</li>
+</ul>
+                    <!-- <a class="btn btn-default btn-xs" href="/postgres-monitoring.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-10-11T18:04:22+00:00"> <a href="/postgres-monitoring.html" rel="bookmark" title="Permalink to Postgres Monitoring">2016-10-11 18:04:22</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0717804175097,-87.7154614593466" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/stackdriver.html">Stackdriver</a></h2>
                 <div class="entry-content"><p>I've been studying <a href="https://cloud.google.com/stackdriver/">Stackdriver Monitoring</a> for Google Cloud, and setting up simple alerts and metric dashboards. I wrote up my findings on <a href="https://github.com/tym-oao/tym-oao.github.io/wiki/Stackdriver-Monitoring">this wiki page</a>.</p>
                     <!-- <a class="btn btn-default btn-xs" href="/stackdriver.html">more ...</a> -->
@@ -248,23 +312,6 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
                 </div>
                 <footer class="storyfoot">
                     <abbr class="storydate" title="2016-05-18T00:00:00-05:00"> <a href="/distinct-line-items-from-dfp-line-item-service.html" rel="bookmark" title="Permalink to Distinct line items from DFP line item service">2016-05-18 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.63285241" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
-                </footer><!-- /.post-info -->
-            </article>
-
-            <!-- <hr/> -->
-            <article>
-                <h2><a href="/handling-fact-updates.html">Handling fact updates</a></h2>
-                <div class="entry-content"><ul>
-<li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
-<li>In our case, DFP is already returning us pre-aggregated snapshot data; they restate the snapshot data over time as more atomic data accumulates on their end.</li>
-<li>For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP</li>
-<li>Exact number of days in the window TBD based on analysis of recent re-pulls of data we have already loaded.</li>
-<li>Best guess as of now: 14-day reload window (requires further investigation to rule out first-of-month being exceptional)</li>
-</ul>
-                    <!-- <a class="btn btn-default btn-xs" href="/handling-fact-updates.html">more ...</a> -->
-                </div>
-                <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-05-11T07:24:35-05:00"> <a href="/handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">2016-05-11 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.6328524" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 
