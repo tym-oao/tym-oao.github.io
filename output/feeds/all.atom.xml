@@ -1,5 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2016-07-19T03:31:03+00:00</updated><entry><title>Stackdriver</title><link href="/stackdriver.html" rel="alternate"></link><published>2016-07-19T03:31:03+00:00</published><author><name>Thomas</name></author><id>tag:,2016-07-19:stackdriver.html</id><summary type="html">&lt;p&gt;I've studying [Stackdriver Monitoring] for Google Cloud, and setting up a few simple alerts and metric dashboards. I wrote up my findings on &lt;a href="https://github.com/tym-oao/tym-oao.github.io/wiki/Stackdriver-Monitoring"&gt;this wiki page&lt;/a&gt;.&lt;/p&gt;</summary></entry><entry><title>Using pg_service.conf with Luigi</title><link href="/using-pg_serviceconf-with-luigi.html" rel="alternate"></link><published>2016-07-14T17:42:15+00:00</published><author><name>Thomas</name></author><id>tag:,2016-07-14:using-pg_serviceconf-with-luigi.html</id><summary type="html">&lt;p&gt;I was thinking about the pg_service.conf post I wrote yesterday, and wondering how to follow that practice in &lt;a href="http://luigi.readthedocs.io/"&gt;Luigi&lt;/a&gt;. It's a little tricky, because &lt;a href="http://luigi.readthedocs.io/en/stable/api/luigi.postgres.html"&gt;&lt;code&gt;luigi.postgres&lt;/code&gt;&lt;/a&gt; implements instances of &lt;code&gt;luigi.contrib.rdbms&lt;/code&gt; abstract classes, and therefore expects all the abstract properties (i.e., host, database, etc.) to be specified. So, when I tried simply overriding the &lt;code&gt;connect()&lt;/code&gt; method of &lt;code&gt;PostgresTarget&lt;/code&gt; I was getting TypeErrors because those abstract methods weren't implemented.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2016-10-11T18:04:22+00:00</updated><entry><title>Postgres Monitoring</title><link href="/postgres-monitoring.html" rel="alternate"></link><published>2016-10-11T18:04:22+00:00</published><author><name>Thomas</name></author><id>tag:,2016-10-11:postgres-monitoring.html</id><summary type="html">&lt;h2&gt;What we have in palace&lt;/h2&gt;
+&lt;h4&gt;Monitors&lt;/h4&gt;
+&lt;p&gt;Via &lt;a href="https://app.google.stackdriver.com/services/postgresql"&gt;Stackdriver&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Connections (count): Number of connections to PostgreSQL.&lt;/li&gt;
+&lt;li&gt;Disk Usage (byte): Number of bytes currently being used on disk.&lt;/li&gt;
+&lt;li&gt;Commits (count/s): Number of commits per second.&lt;/li&gt;
+&lt;li&gt;Rollbacks (count/s): Number of rollbacks per second.&lt;/li&gt;
+&lt;li&gt;Heap Blocks Read Rate (count/s): Number of blocks read from the heap.&lt;/li&gt;
+&lt;li&gt;Heap Cache Hit Rate (count/s): Number of blocks read directly out of the cache.&lt;/li&gt;
+&lt;li&gt;Index Blocks Read Rate (count/s): Number of blocks read from the index.&lt;/li&gt;
+&lt;li&gt;Index Cache Hit Rate (count/s): Number of index blocks read directly out of the cache.&lt;/li&gt;
+&lt;li&gt;Toast Blocks Read Rate (count/s): Number of reads from the toast blocks.&lt;/li&gt;
+&lt;li&gt;Toast Cache Hit Rate (count/s): Number of toast blocks read directly out of the cache.&lt;/li&gt;
+&lt;li&gt;Toast Index Blocks Read Rate (count/s): Number of blocks read from the toast index.&lt;/li&gt;
+&lt;li&gt;Toast Index Cache Hit Rate (count/s): Number of toast index blocks read directly out of the cache.&lt;/li&gt;
+&lt;li&gt;Operations [delete, insert, update, heap only update] (count/s): Number of rows [deleted, inserted, updated, heap only updated] in the db.&lt;/li&gt;
+&lt;li&gt;Dead Tuples (count): Number of tuples that are dead in the db.&lt;/li&gt;
+&lt;li&gt;Live Tuples (count): Number of tuples that are live in the db.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Plus CPU, RAM, disk, and network traffic stats on the host&lt;/p&gt;
+&lt;p&gt;All of the above are simply being passively monitored; we don't have any threshold-based alerting on any metrics.&lt;/p&gt;
+&lt;h4&gt;Alerting policies&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Uptime Check Health on mart.pgdata.xyz fails&lt;/li&gt;
+&lt;li&gt;Uptime Check Health on warehouse.pgdata.xyz fails&lt;/li&gt;
+&lt;li&gt;CPU Usage is absent for greater than 5 minutes from warehouse.pgdata.xyz&lt;/li&gt;
+&lt;li&gt;CPU Usage is absent for greater than 10 minutes from api-postgres&lt;/li&gt;
+&lt;li&gt;CPU Usage is absent for greater than 5 minutes from mart-postgres&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When raised, these all send notice to the #data channel in Slack, and push notification to TYM via the Google Could Console app.&lt;/p&gt;
+&lt;h2&gt;What we should still add&lt;/h2&gt;
+&lt;h4&gt;Things to monitor&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Count of database locks&lt;/li&gt;
+&lt;li&gt;Duration of queries (avg, longest-running)&lt;/li&gt;
+&lt;li&gt;Count and duration of idle-in-transaction connections&lt;/li&gt;
+&lt;li&gt;Last checkpoint&lt;/li&gt;
+&lt;li&gt;Actual uptime based on database connection (existing checks use ping or CPU metric availability)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Things to alert on&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;blocking locks (at all)&lt;/li&gt;
+&lt;li&gt;exclusive locks (threshold-based)&lt;/li&gt;
+&lt;li&gt;connections waiting for a lock (threshold-based)&lt;/li&gt;
+&lt;li&gt;long-running queries&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;Some options (needs research)&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Custom metrics via Stackdriver API&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://no0p.github.io/pgantenna/"&gt;pgantenna&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://opm.io/"&gt;OPM&lt;/a&gt; (Don't miss &lt;a href="https://github.com/yuhuman/OPM-Docker"&gt;Dockerized&lt;/a&gt; version)&lt;/li&gt;
+&lt;li&gt;Roll our own check_postgres, Nagios, collectd, graphite server&lt;/li&gt;
+&lt;/ul&gt;</summary></entry><entry><title>Stackdriver</title><link href="/stackdriver.html" rel="alternate"></link><published>2016-07-19T03:31:03+00:00</published><author><name>Thomas</name></author><id>tag:,2016-07-19:stackdriver.html</id><summary type="html">&lt;p&gt;I've been studying &lt;a href="https://cloud.google.com/stackdriver/"&gt;Stackdriver Monitoring&lt;/a&gt; for Google Cloud, and setting up simple alerts and metric dashboards. I wrote up my findings on &lt;a href="https://github.com/tym-oao/tym-oao.github.io/wiki/Stackdriver-Monitoring"&gt;this wiki page&lt;/a&gt;.&lt;/p&gt;</summary></entry><entry><title>Using pg_service.conf with Luigi</title><link href="/using-pg_serviceconf-with-luigi.html" rel="alternate"></link><published>2016-07-14T17:42:15+00:00</published><author><name>Thomas</name></author><id>tag:,2016-07-14:using-pg_serviceconf-with-luigi.html</id><summary type="html">&lt;p&gt;I was thinking about the pg_service.conf post I wrote yesterday, and wondering how to follow that practice in &lt;a href="http://luigi.readthedocs.io/"&gt;Luigi&lt;/a&gt;. It's a little tricky, because &lt;a href="http://luigi.readthedocs.io/en/stable/api/luigi.postgres.html"&gt;&lt;code&gt;luigi.postgres&lt;/code&gt;&lt;/a&gt; implements instances of &lt;code&gt;luigi.contrib.rdbms&lt;/code&gt; abstract classes, and therefore expects all the abstract properties (i.e., host, database, etc.) to be specified. So, when I tried simply overriding the &lt;code&gt;connect()&lt;/code&gt; method of &lt;code&gt;PostgresTarget&lt;/code&gt; I was getting TypeErrors because those abstract methods weren't implemented.&lt;/p&gt;
 &lt;p&gt;I didn't want to build this up from a generic Luigi &lt;code&gt;Task&lt;/code&gt;, because &lt;code&gt;luigi.postgres&lt;/code&gt; and &lt;code&gt;luigi.contrib.rdbms&lt;/code&gt; have a lot of really useful stuff already implemented that I would have had to repeat for myself. In the end, I found that I could just set the &lt;code&gt;rdms&lt;/code&gt; properties to &lt;code&gt;None&lt;/code&gt; defaults and then ignore them, while overriding &lt;code&gt;PostgresTarget.connect()&lt;/code&gt; the way I wanted to. The resulting template tasks, along with a couple of simple examples of subclassing them for specific jobs are in &lt;a href="https://gist.github.com/yagermadden/d515f0b1dde2c4cdd6c192e08bb33e00"&gt;this Gist&lt;/a&gt; which is also shown below:&lt;/p&gt;
 &lt;div class="gist"&gt;
     &lt;script src='https://gist.github.com/d515f0b1dde2c4cdd6c192e08bb33e00.js'&gt;&lt;/script&gt;
@@ -7,6 +60,7 @@
         &lt;pre&gt;&lt;code&gt;import luigi
 import luigi.postgres
 import psycopg2
+import os
 
 testdata = ([99, 'My fake plants died because I did not pretend to water'
              ' them.'],
@@ -72,13 +126,15 @@ class PgCopyToTable(luigi.postgres.CopyToTable):
 
 
 class PgExampleQuery(PgServiceQuery):
-    service = luigi.Parameter(default='local')
+    env_service = os.getenv('PGSERVICE', 'local')
+    service = luigi.Parameter(default=env_service)
     table = 'whoa'
     query = 'create table whoa (trival_id serial, whoa_txt text)'
 
 
 class PgExampleLoad(PgCopyToTable):
-    service = luigi.Parameter(default='local')
+    env_service = os.getenv('PGSERVICE', 'local')
+    service = luigi.Parameter(default=env_service)
     table = 'whoa'
     columns = [("trival_id", "INT"),
                ("description", "TEXT")]
