@@ -20,6 +20,33 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/distinct-line-items-from-dfp-line-item-service.html">Distinct line items from DFP line item service</a></h2>
+                <div class="entry-content"><p>Over time, the table <code>warehouse_hold.hold_dfp_line_item</code> has accumulated many rows for each line item. In most cases this is due to changes in the line item configuration or status; it is also due to overlapping attempts to bring the data up-to-date. In any case, Analytics is interested only in the most recent record for each item. As noted in <a href="https://trello.com/c/ygfrMXJr/615-warehouse-etl-investigate-and-fix-line-item-discrepancies-between-dfp-and-hold-dfp-line-item-table">Trello</a>, I created a new <code>hold_dfp_line_item_distinct</code> table, to include one record per line_item_id, based on maximum <code>last_modified_date_time</code> and <code>created_at</code> values.</p>
+<p>Oddly (says I), while a CTE defined as</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">select</span> <span class="k">max</span><span class="p">(</span><span class="n">last_modified_date_time</span><span class="p">)</span> <span class="k">as</span> <span class="n">last_modified_date_time</span>
+     <span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">created_at</span><span class="p">)</span> <span class="k">as</span> <span class="n">created_at</span>
+     <span class="p">,</span> <span class="n">line_item_id</span>
+  <span class="k">from</span> <span class="n">hold_dfp_line_item</span>
+ <span class="k">group</span> <span class="k">by</span> <span class="mi">3</span>
+</pre></div>
+</td></tr></table>
+
+<p>has the expected number of rows, joining that on all three columns back to the main table resulted in a small number (39 out of about a million) of duplicate rows.</p>
+<p>I have been able to resolve the matter by using <code>select distinct</code>  in the main query, but I don't understand why it should be necessary.</p>
+<p>Also, as we update with new pulls from the line item service, we'll begin to have multiple rows per line item again, and if this simplified table is desirable in Hold, we'll have to keep refreshing it. Therefore, we will eventually find out whether the duplication of the same line item at the same created_at timestamp was a one-time glitch, or something ongoing. In the former case, we should remove the <code>distinct</code> from the query, for performance reasons. This note is here as a reminder</p>
+                    <!-- <a class="btn btn-default btn-xs" href="/distinct-line-items-from-dfp-line-item-service.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-05-18T00:00:00-05:00"> <a href="/distinct-line-items-from-dfp-line-item-service.html" rel="bookmark" title="Permalink to Distinct line items from DFP line item service">2016-05-18 00:00:00</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8888423,-87.63285241" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/handling-fact-updates.html">Handling fact updates</a></h2>
                 <div class="entry-content"><ul>
 <li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
