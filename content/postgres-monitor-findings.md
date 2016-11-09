@@ -1,5 +1,5 @@
-title: Postgres Monitoring Trial Findings
-date 2016-11-08 12:07:58
+Title: Postgres Monitoring Trial Findings
+Date: 2016-11-08 12:07:58
 lat: 41.888791
 long: -87.632138
 
