@@ -20,6 +20,74 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/stackdriver-custom-metrics.html">Stackdriver custom metrics</a></h2>
+                <div class="entry-content"><p>The last item left to investigate/spike on for Postgres monitoring was setting up custom metrics via the Stackdriver API. This turns out to be fairly easy and quite flexible, and will be my recommendation for how we should proceed with filling in the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">remaining monitoring items</a> that aren't addressed by Stackdriver and stackdriver-agent out of the box.</p>
+<p>For python, connection to the API is managed via the usual <code>discovery</code> method in the official <code>google-api-python-client</code> library (and of course there are libraries for JS, Go, etc. as well).</p>
+<p>Creation of a custom metric just requires provisioning a metric description and associating that to a metric type name. The basic structure of a metric is shown in the following python dictionary example:</p>
+<div class="highlight"><pre><span></span><span class="n">metrics_descriptor</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">custom_metric_type</span><span class="p">,</span>
+    <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;environment&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;valueType&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An arbitrary measurement&quot;</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;metricKind&quot;</span><span class="p">:</span> <span class="n">metric_kind</span><span class="p">,</span>
+    <span class="s2">&quot;valueType&quot;</span><span class="p">:</span> <span class="s2">&quot;INT64&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;items&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An arbitrary measurement.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;displayName&quot;</span><span class="p">:</span> <span class="s2">&quot;Custom Metric&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The value in the <code>"type"</code> node is just an arbitrary value in the <code>custom.googleapis.com</code> namespace, for example 'custom.googleapis.com/postgres/connection_status'. The <a href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind"><code>metricKind</code></a> is generally one of 'GAUGE' or 'CUMULATIVE'. The <code>"labels"</code> provide a set of descriptive tags used to distinguish among specific instances of a metric type (e.g., a label might identify which Postgres instance a particular time series was coming from).</p>
+<p>For writing data to a custom metric, we use the <a href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/create"><code>timeSeries.create</code></a> method. The structure looks complicated, but essentially we simply post a timestamp and data value to a given custom metric object for a resource. For example:</p>
+<div class="highlight"><pre><span></span><span class="n">timeseries_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s1">&#39;custom.googleapis.com/trial_metric&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;pg_instance&quot;</span><span class="p">:</span> <span class="s2">&quot;warehouse&quot;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;resource&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s1">&#39;gce_instance&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;instance_id&#39;</span><span class="p">:</span>
+            <span class="s1">&#39;gke-warehouse-provisioning-1-fde62020-node-l8ba&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;zone&#39;</span><span class="p">:</span> <span class="s1">&#39;us-central1-f&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;points&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;startTime&quot;</span><span class="p">:</span> <span class="n">now</span><span class="p">,</span>
+                <span class="s2">&quot;endTime&quot;</span><span class="p">:</span> <span class="n">now</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;boolValue&quot;</span><span class="p">:</span> <span class="bp">True</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note it is also possible to create a new custom metric and start posting data to it in a single step.</p>
+<p>The recommendation for resource is to use the physical layer on which the app being measured resides, although it is possible to set that to <code>gke_container</code>. <a href="https://cloud.google.com/monitoring/api/resources">The docs have a full list of monitored resource types</a>.</p>
+<h4>Conclusion</h4>
+<p>Using custom metrics for Postgres monitoring seems like the best bet. It may be possible to get something like <a href="https://bucardo.org/wiki/Check_postgres">check_postgres</a> to produce output that can be read and posted to a custom metric. Or, since the number of checks to be added is relatively small compared to everything included in check_postgres, it might be easier to submit our own queries to Postgres using psycopg2 or whatever client, and then provision a TimeSeries object from that.</p>
+<p>Although basic client connection to the Stackdriver API is provided by the standard <code>google-api-python-client</code> library, it will probably be worthwhile to provide a small helper module to generalize the task of creating and sending data to custom metrics from Postgres checks.</p>
+                    <!-- <a class="btn btn-default btn-xs" href="/stackdriver-custom-metrics.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-11-17T15:38:53-06:00"> <a href="/stackdriver-custom-metrics.html" rel="bookmark" title="Permalink to Stackdriver custom metrics">2016-11-17 15:38:53</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.889197,-87.632898" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/postgres-monitoring-trial-findings.html">Postgres Monitoring Trial Findings</a></h2>
                 <div class="entry-content"><p>In order to supplement the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">monitoring available in Stackdriver</a>, I took a look at a number of options, as noted in <a href="https://trello.com/c/1pWdNWVM">this card</a>.</p>
 <h2>TL;DR</h2>
@@ -317,18 +385,6 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
                 </div>
                 <footer class="storyfoot">
                     <abbr class="storydate" title="2016-06-29T22:54:20+00:00"> <a href="/corrupt-database-disk-issue-at-gce.html" rel="bookmark" title="Permalink to Corrupt database disk issue at GCE">2016-06-29 22:54:20</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=41.8828766952614,-87.64016439234" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
-                </footer><!-- /.post-info -->
-            </article>
-
-            <!-- <hr/> -->
-            <article>
-                <h2><a href="/self-referential-todo.html">Self-referential TODO</a></h2>
-                <div class="entry-content"><p><s>While I want to keeping the styling and build of this page brutally simple, one thing I should consider adding is <a href="http://pygments.org/">pygments</a> or similar for code syntax highlighting.</s> <em>(UPDATE: done!)</em></p>
-<p><s>Also, look into why <a href="https://github.com/yagermadden/straplessdown">straplessdown</a> is stripping inline HTML from the markdown source section. 😕 </s> <em>(UPDATE: wontfix; using Pelican now instead.)</em></p>
-                    <!-- <a class="btn btn-default btn-xs" href="/self-referential-todo.html">more ...</a> -->
-                </div>
-                <footer class="storyfoot">
-                    <abbr class="storydate" title="2016-06-23T07:24:35-05:00"> <a href="/self-referential-todo.html" rel="bookmark" title="Permalink to Self-referential TODO">2016-06-23 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0718055142177,-87.7152488015581" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </article>
 

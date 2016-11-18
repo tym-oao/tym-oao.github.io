@@ -20,6 +20,18 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/self-referential-todo.html">Self-referential TODO</a></h2>
+                <div class="entry-content"><p><s>While I want to keeping the styling and build of this page brutally simple, one thing I should consider adding is <a href="http://pygments.org/">pygments</a> or similar for code syntax highlighting.</s> <em>(UPDATE: done!)</em></p>
+<p><s>Also, look into why <a href="https://github.com/yagermadden/straplessdown">straplessdown</a> is stripping inline HTML from the markdown source section. 😕 </s> <em>(UPDATE: wontfix; using Pelican now instead.)</em></p>
+                    <!-- <a class="btn btn-default btn-xs" href="/self-referential-todo.html">more ...</a> -->
+                </div>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-06-23T07:24:35-05:00"> <a href="/self-referential-todo.html" rel="bookmark" title="Permalink to Self-referential TODO">2016-06-23 07:24:35</a></abbr>&nbsp;<a href="http://maps.google.com/maps?q=42.0718055142177,-87.7152488015581" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/distinct-line-items-from-dfp-line-item-service.html">Distinct line items from DFP line item service</a></h2>
                 <div class="entry-content"><p>Over time, the table <code>warehouse_hold.hold_dfp_line_item</code> has accumulated many rows for each line item. In most cases this is due to changes in the line item configuration or status; it is also due to overlapping attempts to bring the data up-to-date. In any case, Analytics is interested only in the most recent record for each item. As noted in <a href="https://trello.com/c/ygfrMXJr/615-warehouse-etl-investigate-and-fix-line-item-discrepancies-between-dfp-and-hold-dfp-line-item-table">Trello</a>, I created a new <code>hold_dfp_line_item_distinct</code> table, to include one record per line_item_id, based on maximum <code>last_modified_date_time</code> and <code>created_at</code> values.</p>
 <p>Oddly (says I), while a CTE defined as</p>
