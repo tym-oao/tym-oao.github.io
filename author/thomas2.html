@@ -20,6 +20,56 @@
 	</div>
 </div><div id=main>
             <article>
+                <h2><a href="/pg_service-psycopg2.html">pg_service + psycopg2 = ❤️</a></h2>
+                <div class="entry-content">
+                    <p>A couple of days ago I learned about the <a href="https://www.postgresql.org/docs/current/static/libpq-pgservice.html">pg_service.conf file</a> in Postgres, and posted about it to my teammates in Slack. It lets you store connection parameters under single service names, using square-bracked "INI file" format. This makes connecting to frequently-used hosts and databases much easier. For example, with a <code>pg_service.conf</code> like...</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">[mydb]</span>
+<span class="na">host</span><span class="o">=</span><span class="s">somehost</span>
+<span class="na">port</span><span class="o">=</span><span class="s">5433</span>
+<span class="na">user</span><span class="o">=</span><span class="s">someuser</span>
+<span class="na">dbname</span><span class="o">=</span><span class="s">mydatabase</span>
+</pre></div>
+</td></tr></table>
+
+<p>...then you can go <code>PGSERVICE=mydb psql</code> at the command line, and Bob's your uncle. (This is extra handy if you have the <code>PGPASSWORD</code> envar set to the password for <code>someuser</code>.) Instead of always setting the PGSERVICE variable, I also export that to my most-often-used service (the warehouse instance, in my case) in my <code>.bashrc</code>. Another way I made this easier on myself is with by adding a simple alias-like function (I used a function because aliases can't take arguments):</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>pg<span class="o">()</span> <span class="o">{</span> <span class="nv">PGSERVICE</span><span class="o">=</span><span class="nv">$1</span> psql
+
+<span class="o">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>The other noteworthy thing here, is that the defined services work at the libpq level, which means that any native postgresql driver (for instance psycopg2 😉) can use them as well.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">psycopg2</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">service</span><span class="o">=</span><span class="s1">&#39;mydb&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;secret&#39;</span><span class="p">)</span>  <span class="c1"># or set PGPASSWORD</span>
+</pre></div>
+</td></tr></table>
+
+<p>I made a more complete example in <a href="https://gist.github.com/tym-oao/33baf67bb332cebc4b20f7211dbedf59">this gist</a>. I suggest we should use this manner of provisioning database connections as a matter of policy:</p>
+<ul>
+<li><code>ADD</code> a pg_service.conf file to your Docker image (likely better: provide for one to be mounted in at run time).</li>
+<li>Use Kubernetes secret to set <code>PGPASSWORD</code> in the environment</li>
+<li>Pass the service name to the psycopg2 (or whichever driver) connection method</li>
+</ul>
+<p>It just makes sense.</p>
+                    <footer class="storyfoot">
+                        <abbr class="storydate" title="2016-07-13T16:13:30+00:00"> <a href="/pg_service-psycopg2.html" rel="bookmark" title="Permalink to pg_service + psycopg2 = ❤️">2016-07-13 16:13:30</a></abbr>
+                        &nbsp;<a href="http://maps.google.com/maps?q=41.8892418555794,-87.6326868892114" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
                 <h2><a href="/corrupt-database-disk-issue-at-gce.html">Corrupt database disk issue at GCE</a></h2>
                 <div class="entry-content">
                     <p>Posting this here mainly in case this issue happens to come up again. I've noticed several cases in recent cloud console Notification Activity in which repeated disk-attachment errors were reported. In those cases I didn't notice any database service outages, but this still seems like something that could end up not being an isolated incident.</p>

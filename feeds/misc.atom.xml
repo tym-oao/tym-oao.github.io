@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2016-11-29T10:15:02-06:00</updated><entry><title>iAdOps and Second-System Effect</title><link href="/iadops-and-second-system-effect.html" rel="alternate"></link><published>2016-11-29T10:15:02-06:00</published><author><name>Thomas</name></author><id>tag:,2016-11-29:iadops-and-second-system-effect.html</id><summary type="html">&lt;p&gt;Some of you have already heard my story about the doomed Campaign Management System project (or, more accurately, series of failed projects) back at Leapfrog Online. (Mark will be able to recall his own direct memories.) Of course, LFO already &lt;em&gt;had&lt;/em&gt; a Campaign Management System in the form of a custom application built in-house, but there was general agreement that the company's business operations and policies had outgrown the assumptions made in the original design. A project to rethink, redesign, and build an entirely new application was a high priority for Tech from before the first day I got there—and despite any number of project reboots, changes in frameworks, and reconstitutions of the team membership, I was there for more than seven years and never saw anything shipped.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TYM engineering notes</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2016-12-22T15:11:04-06:00</updated><entry><title>Stupid bash tricks No. 17: Editing on the fly</title><link href="/stupid-bash-tricks-no-17-editing-on-the-fly.html" rel="alternate"></link><published>2016-12-22T15:11:04-06:00</published><author><name>Thomas</name></author><id>tag:,2016-12-22:stupid-bash-tricks-no-17-editing-on-the-fly.html</id><summary type="html">&lt;p&gt;So, for a while now I've been keeping quick notes in text file in "bullet log" format &amp;mdash; almost a sort of private Twitter for myself. The entry format is simple: a timestamp, the note content, and finally a section marker to set of each entry from the next. Like so:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;2016-08-10T13:57:46Z
+
+I&amp;#39;m proud to say I&amp;#39;ve officially been riding fixed-gear bike long enough that freewheel feels weird now.
+
+§
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I like to make it easy on myself to add stuff to this file, so I whipped up a quick &amp;amp; dirty little bash script to automate the timestamp and section marker around the entry, and then append the result to the end of the file. For a long time, this has treated STDIN as a heredoc:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class="nv"&gt;TPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;~/Dropbox/bullet/b0.md  &lt;span class="c1"&gt;# the log file itself&lt;/span&gt;
+&lt;span class="c1"&gt;# here&amp;#39;s where it waits for input, then assigns to $CONTENT:&lt;/span&gt;
+&lt;span class="nv"&gt;CONTENT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;cat&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# wrap in timestamp and section symbol&lt;/span&gt;
+date -u +%FT%TZ &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$CONTENT&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;\n&amp;amp;sect;\n&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+atom &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This was fine, but lately I was thinking I'd rather be writing the entry portion in Atom instead of just hanging there until I hit ctl-d. So, just the other day, I revised it to work like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="nv"&gt;TPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;~/Dropbox/bullet/b0.md
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt; /tmp/entry
+atom --wait /tmp/entry
+date -u +%FT%TZ &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+cat /tmp/entry &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;\n&amp;amp;sect;\n&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+atom &lt;span class="nv"&gt;$TPATH&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So, now where I used to get a prompt to type the entry, and Atom window opens a blank temp file instead, and then the script waits for me to save and close that before going on with the rest of its business. It's a little thing, but pretty sweet in practice.&lt;/p&gt;</summary></entry><entry><title>iAdOps and Second-System Effect</title><link href="/iadops-and-second-system-effect.html" rel="alternate"></link><published>2016-11-29T10:15:02-06:00</published><author><name>Thomas</name></author><id>tag:,2016-11-29:iadops-and-second-system-effect.html</id><summary type="html">&lt;p&gt;Some of you have already heard my story about the doomed Campaign Management System project (or, more accurately, series of failed projects) back at Leapfrog Online. (Mark will be able to recall his own direct memories.) Of course, LFO already &lt;em&gt;had&lt;/em&gt; a Campaign Management System in the form of a custom application built in-house, but there was general agreement that the company's business operations and policies had outgrown the assumptions made in the original design. A project to rethink, redesign, and build an entirely new application was a high priority for Tech from before the first day I got there—and despite any number of project reboots, changes in frameworks, and reconstitutions of the team membership, I was there for more than seven years and never saw anything shipped.&lt;/p&gt;
 &lt;p&gt;In short, it was a classic case of &lt;a href="http://wiki.c2.com/?SecondSystemEffect"&gt;the Second-System Effect&lt;/a&gt; as described by Fred Brooks in the fifth essay of &lt;em&gt;The Mythical Man-Month&lt;/em&gt;. In particular, the requirement that the new system should do everything that the existing one did, while somehow being "better" in a vaguely defined but comprehensive way, was really impossible to reconcile.&lt;/p&gt;
 &lt;p&gt;From the c2 wiki:&lt;/p&gt;
 &lt;blockquote&gt;
