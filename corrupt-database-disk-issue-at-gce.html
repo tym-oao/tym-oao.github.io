@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <title>TYM engineering notes</title>
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+</head>
+<body>
+<div class='small topmenu'><p><a href="/">Home</a> | <a href="/archives.html">Archives</a></p></div>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1><a href="/">TYM engineering notes</a></h1>
+		</div>
+	</div>
+</div><div id=main>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/corrupt-database-disk-issue-at-gce.html"
+                       rel="bookmark"
+                       title="Permalink to Corrupt database disk issue at GCE">
+                        Corrupt database disk issue at GCE
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <p>Posting this here mainly in case this issue happens to come up again. I've noticed several cases in recent cloud console Notification Activity in which repeated disk-attachment errors were reported. In those cases I didn't notice any database service outages, but this still seems like something that could end up not being an isolated incident.</p>
+<h3>Problem</h3>
+<ul>
+<li>Between 22:10 and 22:20 on 2016-06-29, the Google cloud console Activity record shows that the persistent disks mounted to nodes in the <code>warehouse-provisioning-1</code> k8s cluster detached themselves from the instances they had been attached to.</li>
+<li>I say "detached themselves" because neither myself nor anyone at OAO executed any k8s commands to explicitly detach them. The root cause for the detachment is uncertain.</li>
+<li>The timing of <a href="https://status.cloud.google.com/incident/compute/16011">this SSD latency incident incident</a> from the GCE <a href="https://status.cloud.google.com">status page</a> seems to coincide with when these detachments happened. I imagine that disks might have had to be detached and reattached as part of whatever Google engineers did to resolve the issue, but that's a guess on my part.</li>
+<li>In any case, while the disks were also automatically reattached, the abrupt disconnection left them in an inconsistent state, so that Postgres instances which use these disk mounts for storage were unable to start due to I/O errors.</li>
+<li>Result: <code>warehouse-postgres</code> and <code>mart-postgres</code> instances were down since roughly 22:19.</li>
+</ul>
+<h3>Resolution</h3>
+<p>Basically, to get things working again, I had to <code>fsck</code> the affected disks, then detach them from the instances they were attached to with a <code>gcloud</code> command. So, for example, in the case of the disk <code>mart-data-disk</code> attached to <code>warehouse-provisioning-1-fde62020-node-8n9r</code> I had to:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>ssh warehouse-provisioning-1-fde62020-node-8n9r <span class="se">\</span>
+sudo fsck.ext4 -v -y /dev/disk/by-id/google-mart-data-disk
+gcloud compute instances detach-disk <span class="se">\</span>
+gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
+</pre></div>
+</td></tr></table>
+
+<p>Then restart the <code>mart-postgres</code> as usual with <code>kubectl create -f mart-postgres.yaml</code>.</p>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-06-29T22:54:20+00:00"> <a href="/corrupt-database-disk-issue-at-gce.html" rel="bookmark" title="Permalink to Corrupt database disk issue at GCE">2016-06-29 22:54:20</a></abbr>
+                    &nbsp;<a href="http://maps.google.com/maps?q=41.8828766952614,-87.64016439234" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </div>
+            <!-- /.entry-content -->
+
+        </article>
+    </section>
+
+
+</div>
+</div>
+<footer class="foot-foot">
+   <div class="container">
+      <!-- <hr> -->
+      <div class="row">
+         <div class="col-xs-10 small"><p>&copy; 2016 <a href="https://github.com/tym-oao">Thomas</a><br>
+             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
+
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
+      </div>
+   </div>
+</footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82820361-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

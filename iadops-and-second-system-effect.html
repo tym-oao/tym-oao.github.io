@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <title>TYM engineering notes</title>
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+</head>
+<body>
+<div class='small topmenu'><p><a href="/">Home</a> | <a href="/archives.html">Archives</a></p></div>
+
+<div id="banner">
+	<div class="container">
+		<div class="copy">
+			<h1><a href="/">TYM engineering notes</a></h1>
+		</div>
+	</div>
+</div><div id=main>
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/iadops-and-second-system-effect.html"
+                       rel="bookmark"
+                       title="Permalink to iAdOps and Second-System Effect">
+                        iAdOps and Second-System Effect
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <p>Some of you have already heard my story about the doomed Campaign Management System project (or, more accurately, series of failed projects) back at Leapfrog Online. (Mark will be able to recall his own direct memories.) Of course, LFO already <em>had</em> a Campaign Management System in the form of a custom application built in-house, but there was general agreement that the company's business operations and policies had outgrown the assumptions made in the original design. A project to rethink, redesign, and build an entirely new application was a high priority for Tech from before the first day I got there—and despite any number of project reboots, changes in frameworks, and reconstitutions of the team membership, I was there for more than seven years and never saw anything shipped.</p>
+<p>In short, it was a classic case of <a href="http://wiki.c2.com/?SecondSystemEffect">the Second-System Effect</a> as described by Fred Brooks in the fifth essay of <em>The Mythical Man-Month</em>. In particular, the requirement that the new system should do everything that the existing one did, while somehow being "better" in a vaguely defined but comprehensive way, was really impossible to reconcile.</p>
+<p>From the c2 wiki:</p>
+<blockquote>
+<p>If your project is the second system for most of your designers, then it will probably fail outright. If it doesn't fail, it will be bloated, inefficient, and icky.</p>
+</blockquote>
+<p>I am writing this because I have concerns that our current effort to redefine the product design of iAdOps is smelling a lot to me like the restarts of the CMS project that I experienced. The worrying parallels include:</p>
+<ul>
+<li>We judged an incomplete prototype to be on the wrong track without any actual user testing.</li>
+<li>Executive Management repeated the request that any new iAdOps must include all functionality of the existing tool before it can serve as a replacement.</li>
+<li>The decision to reconsider the fundamentals of our previous working design has (so far) produced more uncertainty about, rather than clearer definition of, the project's goals.</li>
+</ul>
+<p>I do not mean to say that entirely disagree with reconsidering the product design and approach, only that the dangers of Second-System Effect are lurking nearby, and I wanted to caution everybody to be on guard against the risks. Complete rewrites of existing software fail more often than they succeed. That we have already been working on this for two years and have returned to product design without shipping any working software suggests that we have already succumbed to the effect to some extent</p>
+<p>So that I not focus entirely on the problem, here are suggested risk-mitigation strategies:</p>
+<ul>
+<li>Consider whether we can refactor, rather than rewrite, the existing code base.</li>
+<li>Keep goals and scope clear and focused, or make them so.</li>
+<li>Focus on improving, enhancing, or adding one feature at time; we don't have to replace the existing tool all at once.</li>
+<li>Concentrate on specific features, not the general purpose of the application. We can implement features directly, but cannot build abstract ideas as such.</li>
+<li>Apply <a href="http://wiki.c2.com/?YouArentGonnaNeedIt">YAGNI</a> liberally.</li>
+</ul>
+                <footer class="storyfoot">
+                    <abbr class="storydate" title="2016-11-29T10:15:02-06:00"> <a href="/iadops-and-second-system-effect.html" rel="bookmark" title="Permalink to iAdOps and Second-System Effect">2016-11-29 10:15:02</a></abbr>
+                    &nbsp;<a href="http://maps.google.com/maps?q=41.889365,-87.632197" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                </footer><!-- /.post-info -->
+            </div>
+            <!-- /.entry-content -->
+
+        </article>
+    </section>
+
+
+</div>
+</div>
+<footer class="foot-foot">
+   <div class="container">
+      <!-- <hr> -->
+      <div class="row">
+         <div class="col-xs-10 small"><p>&copy; 2016 <a href="https://github.com/tym-oao">Thomas</a><br>
+             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
+
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
+      </div>
+   </div>
+</footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82820361-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>
