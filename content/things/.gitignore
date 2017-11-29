@@ -65,3 +65,9 @@ _draft/
 junk_drawer/
 layout/
 layout
+output/
+output
+output/*
+mfb/
+mfb
+*.pid
