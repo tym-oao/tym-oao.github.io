@@ -1,4 +1,4 @@
-# Refactoring Luigi
+# Refactoring OAO Luigi Pipeline
 ### (With an intro to Luigi concepts and architecture)
 ![Luigi logo](images/luigi.png)
 
