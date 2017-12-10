@@ -25,17 +25,11 @@
             <h2 class="entry-head">
                 &sect;
             </h2>
-            <ul>
-<li><a href="http://decisionworks.com/2010/12/design-tip-130-accumulating-snapshots-for-complex-workflows/">Accumulating snapshot</a> fact table pattern sounded attractive, but we cannot apply it to our case. It is a way of handling late-arriving facts, but supposes access to the transactional workflow milestone data.</li>
-<li>In our case, DFP is already returning us pre-aggregated snapshot data; they restate the snapshot data over time as more atomic data accumulates on their end.</li>
-<li>For this reason, the best approach will be to reload over a reasonable window to keep our fact table records current with the latest stated values from DFP</li>
-<li>Exact number of days in the window TBD based on analysis of recent re-pulls of data we have already loaded.</li>
-<li>Best guess as of now: 14-day reload window (requires further investigation to rule out first-of-month being exceptional)</li>
-</ul>
+            <p>A little thing I whipped together to scratch an itch. Think of it as a tiny skateboard of a database presentation layer for BI apps: <a href="https://github.com/OAODEV/nerium">Nerium</a></p>
         </div>
         <div class="entry-foot">
-            <p class="small"><a href="./handling-fact-updates.html" rel="bookmark" title="Permalink to Handling fact updates">
-                2016-05-11 07:24:35-05:00</a><br>
+            <p class="small"><a href="./introducing-nerium.html" rel="bookmark" title="Permalink to Introducing Nerium">
+                2017-12-10 11:04:41.542000-06:00</a><br>
                                     <object type="image/svg+xml" data="images/w3w.svg" width="15" class="svg"></object>
                     </a></p>
         </div>
