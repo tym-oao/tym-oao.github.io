@@ -5,11 +5,11 @@ long: -87.632138
 
 In order to supplement the [monitoring available in Stackdriver](http://devblog.ty-m.xyz/postgres-monitoring.html), I took a look at a number of options, as noted in [this card](https://trello.com/c/1pWdNWVM).
 
-## TL;DR
+### TL;DR
 
 I'm not overjoyed about any of the solutions I tried, although OPM could do the job if we can't come up with anything else.
 
-## [pgantenna](https://no0p.github.io/pgantenna/)
+### [pgantenna](https://no0p.github.io/pgantenna/)
 
 This looked promising, based on the style of the project homepage, and the  helpful documentation. There was already a [docker image](https://hub.docker.com/r/no0p/pgantenna/) available, so getting this up and running was simple.
 
@@ -19,7 +19,7 @@ Unfortunately, the pgantenna server just served a default Apache page on port 80
 
 **Verdict**: doesn't actually work.
 
-## [OPM](http://opm.io/)
+### [OPM](http://opm.io/)
 
 This turns out to be a vended distribution of Nagios, with a custom UI wrapper, and with config and commands for Postgres already included (although still requiring further customization), and its own [Nagios plugin](https://github.com/OPMDG/check_pgactivity) (an alternative to the more widely-used [`check_postgres`](https://bucardo.org/wiki/Check_postgres)).
 

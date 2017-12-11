@@ -9,7 +9,8 @@ For python, connection to the API is managed via the usual `discovery` method in
 
 Creation of a custom metric just requires provisioning a metric description and associating that to a metric type name. The basic structure of a metric is shown in the following python dictionary example:
 
-```python
+```
+#!python
 metrics_descriptor = {
     "type": custom_metric_type,
     "labels": [
@@ -31,7 +32,8 @@ The value in the `"type"` node is just an arbitrary value in the `custom.googlea
 
 For writing data to a custom metric, we use the [`timeSeries.create`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/create) method. The structure looks complicated, but essentially we simply post a timestamp and data value to a given custom metric object for a resource. For example:
 
-```python
+```
+#!python
 timeseries_data = {
     "metric": {
         "type": 'custom.googleapis.com/trial_metric',
@@ -65,7 +67,7 @@ Note it is also possible to create a new custom metric and start posting data to
 
 The recommendation for resource is to use the physical layer on which the app being measured resides, although it is possible to set that to `gke_container`. [The docs have a full list of monitored resource types](https://cloud.google.com/monitoring/api/resources).
 
-#### Conclusion
+### Conclusion
 Using custom metrics for Postgres monitoring seems like the best bet. It may be possible to get something like [check_postgres](https://bucardo.org/wiki/Check_postgres) to produce output that can be read and posted to a custom metric. Or, since the number of checks to be added is relatively small compared to everything included in check_postgres, it might be easier to submit our own queries to Postgres using psycopg2 or whatever client, and then provision a TimeSeries object from that.
 
 Although basic client connection to the Stackdriver API is provided by the standard `google-api-python-client` library, it will probably be worthwhile to provide a small helper module to generalize the task of creating and sending data to custom metrics from Postgres checks.

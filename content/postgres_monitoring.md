@@ -5,7 +5,7 @@ long: -87.7154614593466
 
 ## What we have in place
 
-#### Monitors
+### Monitors
 
 Via [Stackdriver](https://app.google.stackdriver.com/services/postgresql):
 
@@ -29,7 +29,7 @@ Plus CPU, RAM, disk, and network traffic stats on the host
 
 All of the above are simply being passively monitored; we don't have any threshold-based alerting on any metrics.
 
-#### Alerting policies
+### Alerting policies
 
 - Uptime Check Health on mart.pgdata.xyz fails
 - Uptime Check Health on warehouse.pgdata.xyz fails
@@ -41,7 +41,7 @@ When raised, these all send notice to the #data channel in Slack, and push notif
 
 ## What we should still add
 
-#### Things to monitor
+### Things to monitor
 - Count of database locks
 - Duration of queries (avg, longest-running)
 - Count and duration of idle-in-transaction connections
@@ -49,14 +49,14 @@ When raised, these all send notice to the #data channel in Slack, and push notif
 - Actual uptime based on database connection (existing checks use ping or CPU metric availability)
 
 
-#### Things to alert on
+### Things to alert on
 - blocking locks (at all)
 - exclusive locks (threshold-based)
 - connections waiting for a lock (threshold-based)
 - long-running queries
 
 
-#### Some options (needs research)
+### Some options (needs research)
 - Custom metrics via Stackdriver API
 - [pgantenna](https://no0p.github.io/pgantenna/)
 - [OPM](http://opm.io/) (Don't miss [Dockerized](https://github.com/yuhuman/OPM-Docker) version)

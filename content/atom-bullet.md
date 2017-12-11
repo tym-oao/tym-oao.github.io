@@ -6,7 +6,7 @@ long: -87.715259
 
 So, for a while now I've been keeping quick notes in text file in "bullet log" format &mdash; almost a sort of private Twitter for myself. The entry format is simple: a timestamp, the note content, and finally a section marker to set of each entry from the next. Like so:
 
-```text
+```
 2016-08-10T13:57:46Z
 
 I'm proud to say I've officially been riding fixed-gear bike long enough that freewheel feels weird now.
@@ -17,7 +17,8 @@ I'm proud to say I've officially been riding fixed-gear bike long enough that fr
 I like to make it easy on myself to add stuff to this file, so I whipped up a quick &amp; dirty little bash script to automate the timestamp and section marker around the entry, and then append the result to the end of the file. For a long time, this has treated STDIN as a heredoc:
 
 
-```bash
+```
+#!bash
 #!/bin/bash
 
 TPATH=~/Dropbox/bullet/b0.md  # the log file itself
@@ -33,7 +34,8 @@ atom $TPATH
 
 This was fine, but lately I was thinking I'd rather be writing the entry portion in Atom instead of just hanging there until I hit ctl-d. So, just the other day, I revised it to work like this:
 
-```bash
+```
+#!bash
 #!/bin/bash
 TPATH=~/Dropbox/bullet/b0.md
 echo "" > /tmp/entry
