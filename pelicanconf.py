@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = 'Thomas'
 AUTHOR_HOME = 'https://github.com/tym-oao'
 SITENAME = 'TYM engineering notes'
-SITEURL = 'http://devblog.ty-m.xyz'
+SITEURL = 'http://devblog.ty-m.pw'
 RELATIVE_URLS = True
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
