@@ -16,6 +16,7 @@ I'm proud to say I've officially been riding fixed-gear bike long enough that fr
 
 I like to make it easy on myself to add stuff to this file, so I whipped up a quick &amp; dirty little bash script to automate the timestamp and section marker around the entry, and then append the result to the end of the file. For a long time, this has treated STDIN as a heredoc:
 
+
 ```bash
 #!/bin/bash
 

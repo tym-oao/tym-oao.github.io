@@ -23,21 +23,26 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
-
 DEFAULT_PAGINATION = 7
 
-PYGMENTS_STYLE = 'solarizeddark'
+PYGMENTS_STYLE = 'solarized'
 CC_LICENSE = "CC-BY-SA"
 USE_PAGER = True
 DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 HIDE_SIDEBAR = True
-# Uncomment following line if you want document-relative URLs when developing
-# RELATIVE_URLS = True
-STATIC_PATHS = ['things']
+STATIC_PATHS = ['things', 'images']
 EXTRA_PATH_METADATA = {
-    'things/CNAME': {'path': 'CNAME'},
-    'things/LICENSE': {'path': 'LICENSE'},
-    'things/README': {'path': 'README.md'},
-    'things/.gitignore': {'path': '.gitignore'},
+    'things/CNAME': {
+        'path': 'CNAME'
+    },
+    'things/LICENSE': {
+        'path': 'LICENSE'
+    },
+    'things/README': {
+        'path': 'README.md'
+    },
+    'things/.gitignore': {
+        'path': '.gitignore'
+    },
 }
 PLUGINS = ['pelican_gist']
