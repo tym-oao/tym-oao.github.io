@@ -9,6 +9,7 @@ body {
 }
 
 .main {
+    margin: auto;
     max-width: 61.8%;
     padding: 1rem;
 }
@@ -19,7 +20,6 @@ body {
         padding: 1rem;
     }
 }
-
 h1 {
     border: none;
     font: 100% 'Playfair Display', sans-serif;
@@ -102,11 +102,28 @@ a.svg:after {
 a:hover {
     border: none;
 }
+.banner {
+    padding-bottom: 1em;
+}
+.copy {
+    float: left;
+}
 .topmenu {
     float: right;
     margin: 0;
     padding: 0;
 }
+@media all and (max-width:1024px) {
+    .topmenu {
+        float: left;
+    }
+}
+
+.content_block {
+    clear: both;
+    padding-top: 1em;
+}
+
 .small {
     font-family: "Lato", sans-serif;
     font-size: 0.75em;

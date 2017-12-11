@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width" initial-scale=1>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TYM engineering notes</title>
-  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet">
-  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet" />
+  <link href="theme/normalize.min.css" rel="stylesheet" />
   <link href="theme/main.css" rel="stylesheet" />
   <link href="theme/solarizeddark.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/72ee4db781.js"></script>
@@ -13,15 +13,18 @@
 </head>
 <body>
 
-<div class='topwrapper'>
-<div class='small topmenu'><p><a href="../">Home</a> | <a href="../archives.html">Archives</a></p></div>
+<div class=main>
+
 <div id="banner">
 		<div class="copy">
 			<h1><a href="../">TYM engineering notes</a></h1>
 		</div>
-	</div>
+        <div class='small topmenu'>
+            <p><a href="../">Home</a> | <a href="../archives.html">Archives</a></p>
+        </div>
 </div>
-<div class=main>
+<div class='content_block'>
+    <section id="content">
             <article>
                 <h2><a href="../using-pg_serviceconf-with-luigi.html">Using pg_service.conf with Luigi</a></h2>
                 <div class="entry-content">
@@ -298,22 +301,21 @@ gke-warehouse-provisioning-1-fde62020-node-8n9r --disk mart-data-disk
                 <li class="previous"><a href="../category/misc.html">&larr; Newer</a></li>
                 <li class="next disabled"><a href="#">Older &rarr;</a></li>
         </ul>
+    </section>
 </div>
-</div>
+
 <footer class="foot-foot">
       <!-- <hr> -->
-      <div class="row">
-         <div class="col-xs-10 small"><p>&copy; 2017 <a href="https://github.com/tym-oao">Thomas</a><br>
+         <div class="col-xs-10 small">
+            <p>&copy; 2017 <a href="https://github.com/tym-oao">Thomas</a><br>
             <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
-                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
-             Hypertext rendered with
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a> Some rights reserved. <br>
+            Hypertext rendered with
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
-
-         </div>
+          </div>
          <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
-      </div>
-</footer>
-<script>
+      </footer>
+</div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
