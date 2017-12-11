@@ -1,38 +1,51 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html>
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width" initial-scale="1">
+  <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
-  <link href="theme/main.min.css" rel="stylesheet" />
-  <link href="theme/solarized-light.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Gentium+Basic|Inconsolata" />
-  <link rel="icon" href="data:," />
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+  <link rel="icon" href="data:,">
 </head>
 <body>
 
-<div class="banner">
-    <div class="toplogo">
-		<h1><a href="./">TYM engineering notes</a></h1>
+<div class='topwrapper'>
+<div class='small topmenu'><p><a href="./">Home</a> | <a href="./archives.html">Archives</a></p></div>
+<div id="banner">
+		<div class="copy">
+			<h1><a href="./">TYM engineering notes</a></h1>
+		</div>
 	</div>
-    <div class='topmenu small'>
-        <p><a href="./">Home</a> | <a href="./archives.html">Archives</a></p>
-    </div>
 </div>
-<div class="main">
+<div id=main>
     <h1>Tags for TYM engineering notes</h1></div>
-
+</div>
 <footer class="foot-foot">
+      <!-- <hr> -->
       <div class="row">
-         <div class="small"><p><a href="https://github.com/tym-oao">Thomas</a></p>
-             <p><a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/" class="svg">
-             <object type="image/svg+xml" data="images/cc-zero.svg"></object>
-              No rights reserved.</a></p>
-             <p>PGP Fingerprint: 640F FCD3 C75C F970 58B1 9EB7 FA74 DA49 25D1 F373</p>
-             <p><a href="https://keybase.io/tym/key.asc">PGP key</a></p>
-             <p class="small">Mad props: <a href="https://blog.getpelican.com/">Pelican</a>, <a href="https://www.docker.com/community-edition">Docker</a>, <a href="https://coreos.com/os/docs/latest/">CoreOS</a>, <a href="https://lighttpd.net">lighttpd</a>, <a href="https://www.digitalocean.com/">DigitalOcean</a></p>
+         <div class="col-xs-10 small"><p>&copy; 2017 <a href="https://github.com/tym-oao">Thomas</a><br>
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
          </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
       </div>
 </footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82820361-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
 </body>
 </html>

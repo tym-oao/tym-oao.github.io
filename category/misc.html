@@ -1,42 +1,43 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html>
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width" initial-scale="1">
+  <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
-  <link href="theme/main.min.css" rel="stylesheet" />
-  <link href="theme/solarized-light.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Gentium+Basic|Inconsolata" />
-  <link rel="icon" href="data:," />
+  <link href="theme/normalize.min.css" rel="stylesheet" >
+  <link href="theme/main.css" rel="stylesheet" />
+  <link href="theme/solarizeddark.css" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/72ee4db781.js"></script>
+  <link rel="icon" href="data:,">
 </head>
 <body>
 
-<div class="banner">
-    <div class="toplogo">
-		<h1><a href="../">TYM engineering notes</a></h1>
+<div class='topwrapper'>
+<div class='small topmenu'><p><a href="../">Home</a> | <a href="../archives.html">Archives</a></p></div>
+<div id="banner">
+		<div class="copy">
+			<h1><a href="../">TYM engineering notes</a></h1>
+		</div>
 	</div>
-    <div class='topmenu small'>
-        <p><a href="../">Home</a> | <a href="../archives.html">Archives</a></p>
-    </div>
 </div>
-<div class="main">
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <p>A little thing I whipped together to scratch an itch. Think of it as a tiny skateboard of a database presentation layer for BI apps: <a href="https://github.com/OAODEV/nerium">Nerium</a></p>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../introducing-nerium.html" rel="bookmark" title="Permalink to Introducing Nerium">
-                    2017-12-10 11:04:41.542000-06:00</a><br>
-                </p>
-            </div>
-        </article>
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <p>So, for a while now I've been keeping quick notes in text file in "bullet log" format &mdash; almost a sort of private Twitter for myself. The entry format is simple: a timestamp, the note content, and finally a section marker to set of each entry from the next. Like so:</p>
+<div id=main>
+            <article>
+                <h2><a href="../introducing-nerium.html">Introducing Nerium</a></h2>
+                <div class="entry-content">
+                    <p>A little thing I whipped together to scratch an itch. Think of it as a tiny skateboard of a database presentation layer for BI apps: <a href="https://github.com/OAODEV/nerium">Nerium</a></p>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2017-12-10T11:04:41.542000-06:00"> <a href="../introducing-nerium.html" rel="bookmark" title="Permalink to Introducing Nerium">2017-12-10 11:04:41</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=42.0719172090622,-87.715356115363290622" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="../stupid-bash-tricks-no-17-editing-on-the-fly.html">Stupid bash tricks No. 17: Editing on the fly</a></h2>
+                <div class="entry-content">
+                    <p>So, for a while now I've been keeping quick notes in text file in "bullet log" format &mdash; almost a sort of private Twitter for myself. The entry format is simple: a timestamp, the note content, and finally a section marker to set of each entry from the next. Like so:</p>
 <div class="highlight"><pre><span></span>2016-08-10T13:57:46Z
 
 I&#39;m proud to say I&#39;ve officially been riding fixed-gear bike long enough that freewheel feels weird now.
@@ -74,18 +75,19 @@ atom <span class="nv">$TPATH</span>
 
 
 <p>So, now where I used to get a prompt to type the entry, and Atom window opens a blank temp file instead, and then the script waits for me to save and close that before going on with the rest of its business. It's a little thing, but pretty sweet in practice.</p>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../stupid-bash-tricks-no-17-editing-on-the-fly.html" rel="bookmark" title="Permalink to Stupid bash tricks No. 17: Editing on the fly">
-                    2016-12-22 15:11:04-06:00</a><br>
-                </p>
-            </div>
-        </article>
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <p>Some of you have already heard my story about the doomed Campaign Management System project (or, more accurately, series of failed projects) back at Leapfrog Online. (Mark will be able to recall his own direct memories.) Of course, LFO already <em>had</em> a Campaign Management System in the form of a custom application built in-house, but there was general agreement that the company's business operations and policies had outgrown the assumptions made in the original design. A project to rethink, redesign, and build an entirely new application was a high priority for Tech from before the first day I got there—and despite any number of project reboots, changes in frameworks, and reconstitutions of the team membership, I was there for more than seven years and never saw anything shipped.</p>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2016-12-22T15:11:04-06:00"> <a href="../stupid-bash-tricks-no-17-editing-on-the-fly.html" rel="bookmark" title="Permalink to Stupid bash tricks No. 17: Editing on the fly">2016-12-22 15:11:04</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=42.071776,-87.715259" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="../iadops-and-second-system-effect.html">iAdOps and Second-System Effect</a></h2>
+                <div class="entry-content">
+                    <p>Some of you have already heard my story about the doomed Campaign Management System project (or, more accurately, series of failed projects) back at Leapfrog Online. (Mark will be able to recall his own direct memories.) Of course, LFO already <em>had</em> a Campaign Management System in the form of a custom application built in-house, but there was general agreement that the company's business operations and policies had outgrown the assumptions made in the original design. A project to rethink, redesign, and build an entirely new application was a high priority for Tech from before the first day I got there—and despite any number of project reboots, changes in frameworks, and reconstitutions of the team membership, I was there for more than seven years and never saw anything shipped.</p>
 <p>In short, it was a classic case of <a href="http://wiki.c2.com/?SecondSystemEffect">the Second-System Effect</a> as described by Fred Brooks in the fifth essay of <em>The Mythical Man-Month</em>. In particular, the requirement that the new system should do everything that the existing one did, while somehow being "better" in a vaguely defined but comprehensive way, was really impossible to reconcile.</p>
 <p>From the c2 wiki:</p>
 <blockquote>
@@ -106,18 +108,19 @@ atom <span class="nv">$TPATH</span>
 <li>Concentrate on specific features, not the general purpose of the application. We can implement features directly, but cannot build abstract ideas as such.</li>
 <li>Apply <a href="http://wiki.c2.com/?YouArentGonnaNeedIt">YAGNI</a> liberally.</li>
 </ul>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../iadops-and-second-system-effect.html" rel="bookmark" title="Permalink to iAdOps and Second-System Effect">
-                    2016-11-29 10:15:02-06:00</a><br>
-                </p>
-            </div>
-        </article>
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <p>The last item left to investigate/spike on for Postgres monitoring was setting up custom metrics via the Stackdriver API. This turns out to be fairly easy and quite flexible, and will be my recommendation for how we should proceed with filling in the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">remaining monitoring items</a> that aren't addressed by Stackdriver and stackdriver-agent out of the box.</p>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2016-11-29T10:15:02-06:00"> <a href="../iadops-and-second-system-effect.html" rel="bookmark" title="Permalink to iAdOps and Second-System Effect">2016-11-29 10:15:02</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=41.889365,-87.632197" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="../stackdriver-custom-metrics.html">Stackdriver custom metrics</a></h2>
+                <div class="entry-content">
+                    <p>The last item left to investigate/spike on for Postgres monitoring was setting up custom metrics via the Stackdriver API. This turns out to be fairly easy and quite flexible, and will be my recommendation for how we should proceed with filling in the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">remaining monitoring items</a> that aren't addressed by Stackdriver and stackdriver-agent out of the box.</p>
 <p>For python, connection to the API is managed via the usual <code>discovery</code> method in the official <code>google-api-python-client</code> library (and of course there are libraries for JS, Go, etc. as well).</p>
 <p>Creation of a custom metric just requires provisioning a metric description and associating that to a metric type name. The basic structure of a metric is shown in the following python dictionary example:</p>
 <div class="highlight"><pre><span></span><span class="n">metrics_descriptor</span> <span class="o">=</span> <span class="p">{</span>
@@ -175,18 +178,19 @@ atom <span class="nv">$TPATH</span>
 <h4>Conclusion</h4>
 <p>Using custom metrics for Postgres monitoring seems like the best bet. It may be possible to get something like <a href="https://bucardo.org/wiki/Check_postgres">check_postgres</a> to produce output that can be read and posted to a custom metric. Or, since the number of checks to be added is relatively small compared to everything included in check_postgres, it might be easier to submit our own queries to Postgres using psycopg2 or whatever client, and then provision a TimeSeries object from that.</p>
 <p>Although basic client connection to the Stackdriver API is provided by the standard <code>google-api-python-client</code> library, it will probably be worthwhile to provide a small helper module to generalize the task of creating and sending data to custom metrics from Postgres checks.</p>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../stackdriver-custom-metrics.html" rel="bookmark" title="Permalink to Stackdriver custom metrics">
-                    2016-11-17 15:38:53-06:00</a><br>
-                </p>
-            </div>
-        </article>
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <p>In order to supplement the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">monitoring available in Stackdriver</a>, I took a look at a number of options, as noted in <a href="https://trello.com/c/1pWdNWVM">this card</a>.</p>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2016-11-17T15:38:53-06:00"> <a href="../stackdriver-custom-metrics.html" rel="bookmark" title="Permalink to Stackdriver custom metrics">2016-11-17 15:38:53</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=41.889197,-87.632898" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="../postgres-monitoring-trial-findings.html">Postgres Monitoring Trial Findings</a></h2>
+                <div class="entry-content">
+                    <p>In order to supplement the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">monitoring available in Stackdriver</a>, I took a look at a number of options, as noted in <a href="https://trello.com/c/1pWdNWVM">this card</a>.</p>
 <h2>TL;DR</h2>
 <p>I'm not overjoyed about any of the solutions I tried, although OPM could do the job if we can't come up with anything else.</p>
 <h2><a href="https://no0p.github.io/pgantenna/">pgantenna</a></h2>
@@ -220,18 +224,19 @@ atom <span class="nv">$TPATH</span>
 </ul>
 </li>
 </ul>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../postgres-monitoring-trial-findings.html" rel="bookmark" title="Permalink to Postgres Monitoring Trial Findings">
-                    2016-11-08 12:07:58-06:00</a><br>
-                </p>
-            </div>
-        </article>
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <h2>What we have in place</h2>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2016-11-08T12:07:58-06:00"> <a href="../postgres-monitoring-trial-findings.html" rel="bookmark" title="Permalink to Postgres Monitoring Trial Findings">2016-11-08 12:07:58</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=41.888791,-87.632138" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="../postgres-monitoring.html">Postgres Monitoring</a></h2>
+                <div class="entry-content">
+                    <h2>What we have in place</h2>
 <h4>Monitors</h4>
 <p>Via <a href="https://app.google.stackdriver.com/services/postgresql">Stackdriver</a>:</p>
 <ul>
@@ -285,43 +290,59 @@ atom <span class="nv">$TPATH</span>
 <li><a href="http://opm.io/">OPM</a> (Don't miss <a href="https://github.com/yuhuman/OPM-Docker">Dockerized</a> version)</li>
 <li>Roll our own check_postgres, Nagios, collectd, graphite server</li>
 </ul>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../postgres-monitoring.html" rel="bookmark" title="Permalink to Postgres Monitoring">
-                    2016-10-11 18:04:22+00:00</a><br>
-                </p>
-            </div>
-        </article>
-        <article>
-            <div class="entry-content">
-                <h2 class="entry-head">
-                    &sect;
-                </h2>                <p>I've been studying <a href="https://cloud.google.com/stackdriver/">Stackdriver Monitoring</a> for Google Cloud, and setting up simple alerts and metric dashboards. I wrote up my findings on <a href="https://github.com/tym-oao/tym-oao.github.io/wiki/Stackdriver-Monitoring">this wiki page</a>.</p>
-            </div>
-            <div class="entry-foot">
-                <p class="small"><a href="../stackdriver.html" rel="bookmark" title="Permalink to Stackdriver">
-                    2016-07-19 03:31:03+00:00</a><br>
-                </p>
-            </div>
-        </article>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2016-10-11T18:04:22+00:00"> <a href="../postgres-monitoring.html" rel="bookmark" title="Permalink to Postgres Monitoring">2016-10-11 18:04:22</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=42.0717804175097,-87.7154614593466" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+            <article>
+                <h2><a href="../stackdriver.html">Stackdriver</a></h2>
+                <div class="entry-content">
+                    <p>I've been studying <a href="https://cloud.google.com/stackdriver/">Stackdriver Monitoring</a> for Google Cloud, and setting up simple alerts and metric dashboards. I wrote up my findings on <a href="https://github.com/tym-oao/tym-oao.github.io/wiki/Stackdriver-Monitoring">this wiki page</a>.</p>
+                    <footer class="storyfoot">
+                        <span class="storydate" title="2016-07-19T03:31:03+00:00"> <a href="../stackdriver.html" rel="bookmark" title="Permalink to Stackdriver">2016-07-19 03:31:03</a></span>
+                        &nbsp;<a href="http://maps.google.com/maps?q=42.0718216760994,-87.7153549129115" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
+                    </footer>
+                </div>
+
+            </article>
+
+            <!-- <hr/> -->
+
         <ul class="pager">
                 <li class="previous disabled"><a href="#">&larr; Newer</a></li>
                 <li class="next"><a
                         href="../category/misc2.html">Older &rarr;</a></li>
         </ul>
 </div>
-
+</div>
 <footer class="foot-foot">
+      <!-- <hr> -->
       <div class="row">
-         <div class="small"><p><a href="https://github.com/tym-oao">Thomas</a></p>
-             <p><a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/" class="svg">
-             <object type="image/svg+xml" data="images/cc-zero.svg"></object>
-              No rights reserved.</a></p>
-             <p>PGP Fingerprint: 640F FCD3 C75C F970 58B1 9EB7 FA74 DA49 25D1 F373</p>
-             <p><a href="https://keybase.io/tym/key.asc">PGP key</a></p>
-             <p class="small">Mad props: <a href="https://blog.getpelican.com/">Pelican</a>, <a href="https://www.docker.com/community-edition">Docker</a>, <a href="https://coreos.com/os/docs/latest/">CoreOS</a>, <a href="https://lighttpd.net">lighttpd</a>, <a href="https://www.digitalocean.com/">DigitalOcean</a></p>
+         <div class="col-xs-10 small"><p>&copy; 2017 <a href="https://github.com/tym-oao">Thomas</a><br>
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" class="svg">
+                 <object type="image/svg+xml" data="images/cc-by-sa.svg"></object></a>  Some rights reserved. <br>
+             Hypertext rendered with
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a></p>
+
          </div>
+         <div class="col-xs-2"><p class="pull-right"><a href="#"><i class="fa fa-arrow-up"></i></a></p></div>
       </div>
 </footer>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-82820361-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
 </body>
 </html>
