@@ -5,9 +5,14 @@ body {
     font-size: 1.2em;
     line-height: 1.7em;
     margin: 0 auto;
-    max-width: 61.8%;
-    padding: 1em;
+    padding: 1rem;
 }
+
+.main {
+    max-width: 61.8%;
+    padding: 1rem;
+}
+
 @media all and (max-width:768px) {
     .main {
         max-width: 100%;
@@ -56,6 +61,8 @@ code {
     border: 1px solid #3c3c3c;
     border-radius: 5px;
     line-height: 1.33em;
+    max-width: 100%;
+    overflow: scroll;
     padding: 7px 12px;
 }
 .linenodiv {
@@ -118,7 +125,7 @@ a:hover {
     border: none !important;
 }
 .page-header {
-    border: none !important;
+    border: none;
 }
 hr {
     display: none;
@@ -128,7 +135,7 @@ hr {
     font-size: 0.8em;
 }
 a.icon {
-    border: none !important;
+    border: none;
     display: inline-block;
     position: relative;
 }
