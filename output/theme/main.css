@@ -142,7 +142,7 @@ a:hover {
     margin-top: 2.5em;
     margin-bottom: 4em;
     line-height: 1.55em;
-    border-left: #a2a2a2 3px solid;
+    /*border-left: #a2a2a2 3px solid;*/
     display: block;
 }
 .foot-foot a, .foot-foot a:visited {
