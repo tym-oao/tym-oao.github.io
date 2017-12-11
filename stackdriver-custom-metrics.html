@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
+  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet">
   <link href="theme/normalize.min.css" rel="stylesheet" >
   <link href="theme/main.css" rel="stylesheet" />
   <link href="theme/solarizeddark.css" rel="stylesheet" />
@@ -36,7 +37,21 @@
                 <p>The last item left to investigate/spike on for Postgres monitoring was setting up custom metrics via the Stackdriver API. This turns out to be fairly easy and quite flexible, and will be my recommendation for how we should proceed with filling in the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">remaining monitoring items</a> that aren't addressed by Stackdriver and stackdriver-agent out of the box.</p>
 <p>For python, connection to the API is managed via the usual <code>discovery</code> method in the official <code>google-api-python-client</code> library (and of course there are libraries for JS, Go, etc. as well).</p>
 <p>Creation of a custom metric just requires provisioning a metric description and associating that to a metric type name. The basic structure of a metric is shown in the following python dictionary example:</p>
-<div class="highlight"><pre><span></span><span class="n">metrics_descriptor</span> <span class="o">=</span> <span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">metrics_descriptor</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">custom_metric_type</span><span class="p">,</span>
     <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
@@ -52,11 +67,37 @@
     <span class="s2">&quot;displayName&quot;</span><span class="p">:</span> <span class="s2">&quot;Custom Metric&quot;</span>
 <span class="p">}</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>The value in the <code>"type"</code> node is just an arbitrary value in the <code>custom.googleapis.com</code> namespace, for example 'custom.googleapis.com/postgres/connection_status'. The <a href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind"><code>metricKind</code></a> is generally one of 'GAUGE' or 'CUMULATIVE'. The <code>"labels"</code> provide a set of descriptive tags used to distinguish among specific instances of a metric type (e.g., a label might identify which Postgres instance a particular time series was coming from).</p>
 <p>For writing data to a custom metric, we use the <a href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/create"><code>timeSeries.create</code></a> method. The structure looks complicated, but essentially we simply post a timestamp and data value to a given custom metric object for a resource. For example:</p>
-<div class="highlight"><pre><span></span><span class="n">timeseries_data</span> <span class="o">=</span> <span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">timeseries_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s1">&#39;custom.googleapis.com/trial_metric&#39;</span><span class="p">,</span>
         <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -84,11 +125,11 @@
     <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>Note it is also possible to create a new custom metric and start posting data to it in a single step.</p>
 <p>The recommendation for resource is to use the physical layer on which the app being measured resides, although it is possible to set that to <code>gke_container</code>. <a href="https://cloud.google.com/monitoring/api/resources">The docs have a full list of monitored resource types</a>.</p>
-<h4>Conclusion</h4>
+<h3>Conclusion</h3>
 <p>Using custom metrics for Postgres monitoring seems like the best bet. It may be possible to get something like <a href="https://bucardo.org/wiki/Check_postgres">check_postgres</a> to produce output that can be read and posted to a custom metric. Or, since the number of checks to be added is relatively small compared to everything included in check_postgres, it might be easier to submit our own queries to Postgres using psycopg2 or whatever client, and then provision a TimeSeries object from that.</p>
 <p>Although basic client connection to the Stackdriver API is provided by the standard <code>google-api-python-client</code> library, it will probably be worthwhile to provide a small helper module to generalize the task of creating and sending data to custom metrics from Postgres checks.</p>
                 <footer class="storyfoot">

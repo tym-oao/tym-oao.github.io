@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
+  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet">
   <link href="theme/normalize.min.css" rel="stylesheet" >
   <link href="theme/main.css" rel="stylesheet" />
   <link href="theme/solarizeddark.css" rel="stylesheet" />
@@ -43,7 +44,17 @@ I&#39;m proud to say I&#39;ve officially been riding fixed-gear bike long enough
 
 
 <p>I like to make it easy on myself to add stuff to this file, so I whipped up a quick &amp; dirty little bash script to automate the timestamp and section marker around the entry, and then append the result to the end of the file. For a long time, this has treated STDIN as a heredoc:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
 <span class="nv">TPATH</span><span class="o">=</span>~/Dropbox/bullet/b0.md  <span class="c1"># the log file itself</span>
 <span class="c1"># here&#39;s where it waits for input, then assigns to $CONTENT:</span>
@@ -55,10 +66,18 @@ date -u +%FT%TZ &gt;&gt; <span class="nv">$TPATH</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;\n&amp;sect;\n&quot;</span> &gt;&gt; <span class="nv">$TPATH</span>
 atom <span class="nv">$TPATH</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>This was fine, but lately I was thinking I'd rather be writing the entry portion in Atom instead of just hanging there until I hit ctl-d. So, just the other day, I revised it to work like this:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="nv">TPATH</span><span class="o">=</span>~/Dropbox/bullet/b0.md
 <span class="nb">echo</span> <span class="s2">&quot;&quot;</span> &gt; /tmp/entry
 atom --wait /tmp/entry
@@ -68,7 +87,7 @@ cat /tmp/entry &gt;&gt; <span class="nv">$TPATH</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;\n&amp;sect;\n&quot;</span> &gt;&gt; <span class="nv">$TPATH</span>
 atom <span class="nv">$TPATH</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>So, now where I used to get a prompt to type the entry, and Atom window opens a blank temp file instead, and then the script waits for me to save and close that before going on with the rest of its business. It's a little thing, but pretty sweet in practice.</p>
                 <footer class="storyfoot">

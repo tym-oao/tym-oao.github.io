@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
+  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet">
   <link href="theme/normalize.min.css" rel="stylesheet" >
   <link href="theme/main.css" rel="stylesheet" />
   <link href="theme/solarizeddark.css" rel="stylesheet" />
@@ -34,7 +35,7 @@
             </header>
             <div class="entry-content">
                 <h2>What we have in place</h2>
-<h4>Monitors</h4>
+<h3>Monitors</h3>
 <p>Via <a href="https://app.google.stackdriver.com/services/postgresql">Stackdriver</a>:</p>
 <ul>
 <li>Connections (count): Number of connections to PostgreSQL.</li>
@@ -55,7 +56,7 @@
 </ul>
 <p>Plus CPU, RAM, disk, and network traffic stats on the host</p>
 <p>All of the above are simply being passively monitored; we don't have any threshold-based alerting on any metrics.</p>
-<h4>Alerting policies</h4>
+<h3>Alerting policies</h3>
 <ul>
 <li>Uptime Check Health on mart.pgdata.xyz fails</li>
 <li>Uptime Check Health on warehouse.pgdata.xyz fails</li>
@@ -65,7 +66,7 @@
 </ul>
 <p>When raised, these all send notice to the #data channel in Slack, and push notification to TYM via the Google Could Console app.</p>
 <h2>What we should still add</h2>
-<h4>Things to monitor</h4>
+<h3>Things to monitor</h3>
 <ul>
 <li>Count of database locks</li>
 <li>Duration of queries (avg, longest-running)</li>
@@ -73,14 +74,14 @@
 <li>Last checkpoint</li>
 <li>Actual uptime based on database connection (existing checks use ping or CPU metric availability)</li>
 </ul>
-<h4>Things to alert on</h4>
+<h3>Things to alert on</h3>
 <ul>
 <li>blocking locks (at all)</li>
 <li>exclusive locks (threshold-based)</li>
 <li>connections waiting for a lock (threshold-based)</li>
 <li>long-running queries</li>
 </ul>
-<h4>Some options (needs research)</h4>
+<h3>Some options (needs research)</h3>
 <ul>
 <li>Custom metrics via Stackdriver API</li>
 <li><a href="https://no0p.github.io/pgantenna/">pgantenna</a></li>

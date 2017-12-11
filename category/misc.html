@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
+  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet">
   <link href="theme/normalize.min.css" rel="stylesheet" >
   <link href="theme/main.css" rel="stylesheet" />
   <link href="theme/solarizeddark.css" rel="stylesheet" />
@@ -47,7 +48,17 @@ I&#39;m proud to say I&#39;ve officially been riding fixed-gear bike long enough
 
 
 <p>I like to make it easy on myself to add stuff to this file, so I whipped up a quick &amp; dirty little bash script to automate the timestamp and section marker around the entry, and then append the result to the end of the file. For a long time, this has treated STDIN as a heredoc:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
 <span class="nv">TPATH</span><span class="o">=</span>~/Dropbox/bullet/b0.md  <span class="c1"># the log file itself</span>
 <span class="c1"># here&#39;s where it waits for input, then assigns to $CONTENT:</span>
@@ -59,10 +70,18 @@ date -u +%FT%TZ &gt;&gt; <span class="nv">$TPATH</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;\n&amp;sect;\n&quot;</span> &gt;&gt; <span class="nv">$TPATH</span>
 atom <span class="nv">$TPATH</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>This was fine, but lately I was thinking I'd rather be writing the entry portion in Atom instead of just hanging there until I hit ctl-d. So, just the other day, I revised it to work like this:</p>
-<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 <span class="nv">TPATH</span><span class="o">=</span>~/Dropbox/bullet/b0.md
 <span class="nb">echo</span> <span class="s2">&quot;&quot;</span> &gt; /tmp/entry
 atom --wait /tmp/entry
@@ -72,7 +91,7 @@ cat /tmp/entry &gt;&gt; <span class="nv">$TPATH</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;\n&amp;sect;\n&quot;</span> &gt;&gt; <span class="nv">$TPATH</span>
 atom <span class="nv">$TPATH</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>So, now where I used to get a prompt to type the entry, and Atom window opens a blank temp file instead, and then the script waits for me to save and close that before going on with the rest of its business. It's a little thing, but pretty sweet in practice.</p>
                     <footer class="storyfoot">
@@ -123,7 +142,21 @@ atom <span class="nv">$TPATH</span>
                     <p>The last item left to investigate/spike on for Postgres monitoring was setting up custom metrics via the Stackdriver API. This turns out to be fairly easy and quite flexible, and will be my recommendation for how we should proceed with filling in the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">remaining monitoring items</a> that aren't addressed by Stackdriver and stackdriver-agent out of the box.</p>
 <p>For python, connection to the API is managed via the usual <code>discovery</code> method in the official <code>google-api-python-client</code> library (and of course there are libraries for JS, Go, etc. as well).</p>
 <p>Creation of a custom metric just requires provisioning a metric description and associating that to a metric type name. The basic structure of a metric is shown in the following python dictionary example:</p>
-<div class="highlight"><pre><span></span><span class="n">metrics_descriptor</span> <span class="o">=</span> <span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">metrics_descriptor</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">custom_metric_type</span><span class="p">,</span>
     <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
@@ -139,11 +172,37 @@ atom <span class="nv">$TPATH</span>
     <span class="s2">&quot;displayName&quot;</span><span class="p">:</span> <span class="s2">&quot;Custom Metric&quot;</span>
 <span class="p">}</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>The value in the <code>"type"</code> node is just an arbitrary value in the <code>custom.googleapis.com</code> namespace, for example 'custom.googleapis.com/postgres/connection_status'. The <a href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind"><code>metricKind</code></a> is generally one of 'GAUGE' or 'CUMULATIVE'. The <code>"labels"</code> provide a set of descriptive tags used to distinguish among specific instances of a metric type (e.g., a label might identify which Postgres instance a particular time series was coming from).</p>
 <p>For writing data to a custom metric, we use the <a href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/create"><code>timeSeries.create</code></a> method. The structure looks complicated, but essentially we simply post a timestamp and data value to a given custom metric object for a resource. For example:</p>
-<div class="highlight"><pre><span></span><span class="n">timeseries_data</span> <span class="o">=</span> <span class="p">{</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">timeseries_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s1">&#39;custom.googleapis.com/trial_metric&#39;</span><span class="p">,</span>
         <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -171,11 +230,11 @@ atom <span class="nv">$TPATH</span>
     <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
-
+</td></tr></table>
 
 <p>Note it is also possible to create a new custom metric and start posting data to it in a single step.</p>
 <p>The recommendation for resource is to use the physical layer on which the app being measured resides, although it is possible to set that to <code>gke_container</code>. <a href="https://cloud.google.com/monitoring/api/resources">The docs have a full list of monitored resource types</a>.</p>
-<h4>Conclusion</h4>
+<h3>Conclusion</h3>
 <p>Using custom metrics for Postgres monitoring seems like the best bet. It may be possible to get something like <a href="https://bucardo.org/wiki/Check_postgres">check_postgres</a> to produce output that can be read and posted to a custom metric. Or, since the number of checks to be added is relatively small compared to everything included in check_postgres, it might be easier to submit our own queries to Postgres using psycopg2 or whatever client, and then provision a TimeSeries object from that.</p>
 <p>Although basic client connection to the Stackdriver API is provided by the standard <code>google-api-python-client</code> library, it will probably be worthwhile to provide a small helper module to generalize the task of creating and sending data to custom metrics from Postgres checks.</p>
                     <footer class="storyfoot">
@@ -191,14 +250,14 @@ atom <span class="nv">$TPATH</span>
                 <h2><a href="/postgres-monitoring-trial-findings.html">Postgres Monitoring Trial Findings</a></h2>
                 <div class="entry-content">
                     <p>In order to supplement the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">monitoring available in Stackdriver</a>, I took a look at a number of options, as noted in <a href="https://trello.com/c/1pWdNWVM">this card</a>.</p>
-<h2>TL;DR</h2>
+<h3>TL;DR</h3>
 <p>I'm not overjoyed about any of the solutions I tried, although OPM could do the job if we can't come up with anything else.</p>
-<h2><a href="https://no0p.github.io/pgantenna/">pgantenna</a></h2>
+<h3><a href="https://no0p.github.io/pgantenna/">pgantenna</a></h3>
 <p>This looked promising, based on the style of the project homepage, and the  helpful documentation. There was already a <a href="https://hub.docker.com/r/no0p/pgantenna/">docker image</a> available, so getting this up and running was simple.</p>
 <p>The app gathers data from a Postgres extension called <a href="http://no0p.github.io/pgsampler/">pgsampler</a>. Building this and installing it a postgres container was easy and straightforward: <code>make &amp;&amp; make install</code> and then add to <code>postgresql.conf</code> as a shared_preload_libraries value.</p>
 <p>Unfortunately, the pgantenna server just served a default Apache page on port 80, and I was unable to noodle out what the URL for the pgantenna app. At this point I noticed that the project hasn't had a new commit in 2 years, so it was unlikely that asking the developer for help would do much, and I abandoned the effort here.</p>
 <p><strong>Verdict</strong>: doesn't actually work.</p>
-<h2><a href="http://opm.io/">OPM</a></h2>
+<h3><a href="http://opm.io/">OPM</a></h3>
 <p>This turns out to be a vended distribution of Nagios, with a custom UI wrapper, and with config and commands for Postgres already included (although still requiring further customization), and its own <a href="https://github.com/OPMDG/check_pgactivity">Nagios plugin</a> (an alternative to the more widely-used <a href="https://bucardo.org/wiki/Check_postgres"><code>check_postgres</code></a>).</p>
 <h4>Pros</h4>
 <ul>
@@ -237,7 +296,7 @@ atom <span class="nv">$TPATH</span>
                 <h2><a href="/postgres-monitoring.html">Postgres Monitoring</a></h2>
                 <div class="entry-content">
                     <h2>What we have in place</h2>
-<h4>Monitors</h4>
+<h3>Monitors</h3>
 <p>Via <a href="https://app.google.stackdriver.com/services/postgresql">Stackdriver</a>:</p>
 <ul>
 <li>Connections (count): Number of connections to PostgreSQL.</li>
@@ -258,7 +317,7 @@ atom <span class="nv">$TPATH</span>
 </ul>
 <p>Plus CPU, RAM, disk, and network traffic stats on the host</p>
 <p>All of the above are simply being passively monitored; we don't have any threshold-based alerting on any metrics.</p>
-<h4>Alerting policies</h4>
+<h3>Alerting policies</h3>
 <ul>
 <li>Uptime Check Health on mart.pgdata.xyz fails</li>
 <li>Uptime Check Health on warehouse.pgdata.xyz fails</li>
@@ -268,7 +327,7 @@ atom <span class="nv">$TPATH</span>
 </ul>
 <p>When raised, these all send notice to the #data channel in Slack, and push notification to TYM via the Google Could Console app.</p>
 <h2>What we should still add</h2>
-<h4>Things to monitor</h4>
+<h3>Things to monitor</h3>
 <ul>
 <li>Count of database locks</li>
 <li>Duration of queries (avg, longest-running)</li>
@@ -276,14 +335,14 @@ atom <span class="nv">$TPATH</span>
 <li>Last checkpoint</li>
 <li>Actual uptime based on database connection (existing checks use ping or CPU metric availability)</li>
 </ul>
-<h4>Things to alert on</h4>
+<h3>Things to alert on</h3>
 <ul>
 <li>blocking locks (at all)</li>
 <li>exclusive locks (threshold-based)</li>
 <li>connections waiting for a lock (threshold-based)</li>
 <li>long-running queries</li>
 </ul>
-<h4>Some options (needs research)</h4>
+<h3>Some options (needs research)</h3>
 <ul>
 <li>Custom metrics via Stackdriver API</li>
 <li><a href="https://no0p.github.io/pgantenna/">pgantenna</a></li>

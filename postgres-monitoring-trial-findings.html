@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width" initial-scale=1>
   <title>TYM engineering notes</title>
+  <link href="https://fonts.googleapis.com/css?family=Gentium+Basic|Playfair+Display" rel="stylesheet">
   <link href="theme/normalize.min.css" rel="stylesheet" >
   <link href="theme/main.css" rel="stylesheet" />
   <link href="theme/solarizeddark.css" rel="stylesheet" />
@@ -34,14 +35,14 @@
             </header>
             <div class="entry-content">
                 <p>In order to supplement the <a href="http://devblog.ty-m.xyz/postgres-monitoring.html">monitoring available in Stackdriver</a>, I took a look at a number of options, as noted in <a href="https://trello.com/c/1pWdNWVM">this card</a>.</p>
-<h2>TL;DR</h2>
+<h3>TL;DR</h3>
 <p>I'm not overjoyed about any of the solutions I tried, although OPM could do the job if we can't come up with anything else.</p>
-<h2><a href="https://no0p.github.io/pgantenna/">pgantenna</a></h2>
+<h3><a href="https://no0p.github.io/pgantenna/">pgantenna</a></h3>
 <p>This looked promising, based on the style of the project homepage, and the  helpful documentation. There was already a <a href="https://hub.docker.com/r/no0p/pgantenna/">docker image</a> available, so getting this up and running was simple.</p>
 <p>The app gathers data from a Postgres extension called <a href="http://no0p.github.io/pgsampler/">pgsampler</a>. Building this and installing it a postgres container was easy and straightforward: <code>make &amp;&amp; make install</code> and then add to <code>postgresql.conf</code> as a shared_preload_libraries value.</p>
 <p>Unfortunately, the pgantenna server just served a default Apache page on port 80, and I was unable to noodle out what the URL for the pgantenna app. At this point I noticed that the project hasn't had a new commit in 2 years, so it was unlikely that asking the developer for help would do much, and I abandoned the effort here.</p>
 <p><strong>Verdict</strong>: doesn't actually work.</p>
-<h2><a href="http://opm.io/">OPM</a></h2>
+<h3><a href="http://opm.io/">OPM</a></h3>
 <p>This turns out to be a vended distribution of Nagios, with a custom UI wrapper, and with config and commands for Postgres already included (although still requiring further customization), and its own <a href="https://github.com/OPMDG/check_pgactivity">Nagios plugin</a> (an alternative to the more widely-used <a href="https://bucardo.org/wiki/Check_postgres"><code>check_postgres</code></a>).</p>
 <h4>Pros</h4>
 <ul>
