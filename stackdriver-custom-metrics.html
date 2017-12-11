@@ -14,10 +14,10 @@
 <body>
 
 <div class='topwrapper'>
-<div class='small topmenu'><p><a href="/">Home</a> | <a href="/archives.html">Archives</a></p></div>
+<div class='small topmenu'><p><a href="devblog.ty-m.pw/">Home</a> | <a href="devblog.ty-m.pw/archives.html">Archives</a></p></div>
 <div id="banner">
 		<div class="copy">
-			<h1><a href="/">TYM engineering notes</a></h1>
+			<h1><a href="devblog.ty-m.pw/">TYM engineering notes</a></h1>
 		</div>
 	</div>
 </div>
@@ -26,7 +26,7 @@
         <article>
             <header class="page-header">
                 <h2>
-                    <a href="/stackdriver-custom-metrics.html"
+                    <a href="devblog.ty-m.pw/stackdriver-custom-metrics.html"
                        rel="bookmark"
                        title="Permalink to Stackdriver custom metrics">
                         Stackdriver custom metrics
@@ -133,7 +133,7 @@
 <p>Using custom metrics for Postgres monitoring seems like the best bet. It may be possible to get something like <a href="https://bucardo.org/wiki/Check_postgres">check_postgres</a> to produce output that can be read and posted to a custom metric. Or, since the number of checks to be added is relatively small compared to everything included in check_postgres, it might be easier to submit our own queries to Postgres using psycopg2 or whatever client, and then provision a TimeSeries object from that.</p>
 <p>Although basic client connection to the Stackdriver API is provided by the standard <code>google-api-python-client</code> library, it will probably be worthwhile to provide a small helper module to generalize the task of creating and sending data to custom metrics from Postgres checks.</p>
                 <footer class="storyfoot">
-                    <span class="storydate" title="2016-11-17T15:38:53-06:00"> <a href="/stackdriver-custom-metrics.html" rel="bookmark" title="Permalink to Stackdriver custom metrics">2016-11-17 15:38:53</a></span>
+                    <span class="storydate" title="2016-11-17T15:38:53-06:00"> <a href="devblog.ty-m.pw/stackdriver-custom-metrics.html" rel="bookmark" title="Permalink to Stackdriver custom metrics">2016-11-17 15:38:53</a></span>
                     &nbsp;<a href="http://maps.google.com/maps?q=41.889197,-87.632898" class="icon"><i class="fa fa-map-marker fa-lg"></i></a>
                 </footer><!-- /.post-info -->
             </div>
