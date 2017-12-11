@@ -1,0 +1,27 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+
+
+[packages]
+
+arrow = "*"
+"fabric3" = "*"
+pelican = "*"
+requests = "*"
+sh = "*"
+markdown = "*"
+ghp-import = "*"
+pelican-gist = "*"
+pygments = "*"
+
+
+[requires]
+
+python_version = "3.6"
